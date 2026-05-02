@@ -6,20 +6,22 @@ use Webkul\PAYPOC\IwexaConnector\Models\IwexaSyncJob;
 use Webkul\PAYPOC\IwexaConnector\Models\IwexaProduct;
 use Webkul\PAYPOC\IwexaConnector\Models\CategoryMapping;
 use Webkul\PAYPOC\IwexaConnector\Models\ProductTypeMapping;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
+use Webkul\PAYPOC\IwexaConnector\Services\VendorImportService;
 
 class CatalogImportService
 {
     protected $categoryMappingService;
     protected $attributeProvisioningService;
+    protected $vendorImportService;
 
     public function __construct(
         CategoryMappingService $categoryMappingService,
-        AttributeProvisioningService $attributeProvisioningService
+        AttributeProvisioningService $attributeProvisioningService,
+        VendorImportService $vendorImportService
     ) {
         $this->categoryMappingService = $categoryMappingService;
         $this->attributeProvisioningService = $attributeProvisioningService;
+        $this->vendorImportService = $vendorImportService;
     }
 
     public function importBatch(array $products, string $idempotencyKey): array
@@ -121,6 +123,11 @@ class CatalogImportService
 
         if (empty($productData['vendor_code'])) {
             throw new \Exception('Vendor code is required');
+        }
+
+        // Validate that vendor exists
+        if (!$this->vendorImportService->vendorExists($productData['vendor_code'])) {
+            throw new \Exception("Vendor with code '{$productData['vendor_code']}' does not exist. Please create the vendor first.");
         }
 
         if (empty($productData['currency'])) {

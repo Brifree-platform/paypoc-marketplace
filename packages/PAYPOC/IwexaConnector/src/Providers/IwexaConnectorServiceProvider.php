@@ -11,6 +11,12 @@ class IwexaConnectorServiceProvider extends ServiceProvider
             __DIR__ . '/../Config/iwexa-connector.php',
             'iwexa-connector'
         );
+
+        // Register services
+        $this->app->singleton(
+            \Webkul\PAYPOC\IwexaConnector\Services\VendorImportService::class,
+            \Webkul\PAYPOC\IwexaConnector\Services\VendorImportService::class
+        );
     }
 
     public function boot(): void
