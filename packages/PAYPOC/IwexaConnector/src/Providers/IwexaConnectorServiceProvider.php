@@ -17,6 +17,31 @@ class IwexaConnectorServiceProvider extends ServiceProvider
             \Webkul\PAYPOC\IwexaConnector\Services\VendorImportService::class,
             \Webkul\PAYPOC\IwexaConnector\Services\VendorImportService::class
         );
+
+        $this->app->singleton(
+            \Webkul\PAYPOC\IwexaConnector\Services\WarehouseSyncService::class,
+            \Webkul\PAYPOC\IwexaConnector\Services\WarehouseSyncService::class
+        );
+
+        $this->app->singleton(
+            \Webkul\PAYPOC\IwexaConnector\Services\WarehouseStockSyncService::class,
+            \Webkul\PAYPOC\IwexaConnector\Services\WarehouseStockSyncService::class
+        );
+
+        $this->app->singleton(
+            \Webkul\PAYPOC\IwexaConnector\Services\ShippingZoneService::class,
+            \Webkul\PAYPOC\IwexaConnector\Services\ShippingZoneService::class
+        );
+
+        $this->app->singleton(
+            \Webkul\PAYPOC\IwexaConnector\Services\ShippingRateService::class,
+            \Webkul\PAYPOC\IwexaConnector\Services\ShippingRateService::class
+        );
+
+        $this->app->singleton(
+            \Webkul\PAYPOC\IwexaConnector\Services\RoutingService::class,
+            \Webkul\PAYPOC\IwexaConnector\Services\RoutingService::class
+        );
     }
 
     public function boot(): void
