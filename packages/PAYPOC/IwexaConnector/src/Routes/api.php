@@ -1,6 +1,6 @@
 <?php
 
-Route::middleware(['api', 'throttle:60,1'])->prefix('bagisto-api/iwexa')->group(function () {
+Route::middleware(['api', 'throttle:60,1', 'iwexa.signature'])->prefix('bagisto-api/iwexa')->group(function () {
     // Catalog endpoints
     Route::post('/catalog/products/batch', 'Webkul\PAYPOC\IwexaConnector\Controllers\Api\CatalogController@importBatch');
     Route::put('/catalog/products/{sku}', 'Webkul\PAYPOC\IwexaConnector\Controllers\Api\CatalogController@updateProduct');

@@ -71,11 +71,19 @@ Esistono **due** classi `IwexaConnectorServiceProvider` con lo stesso nome ma na
    Registra: IwexaApiService, CatalogImport, StockUpdate, CategoryMapping,
    ProductTypeMapping, AttributeMapping, AttributeProvisioning, Webhook + relativi repository.
 
-I due provider registrano binding **disgiunti**. Il provider attivo (Providers/) non
-registra i servizi catalogo/stock/webhook, che però vengono normalmente risolti via
-auto-wiring del container (singleton non strettamente necessari). **Prima di modificare
-la registrazione dei servizi, verifica quale provider è effettivamente in uso** ed
-evita di duplicare/divergere ulteriormente i due file (candidato a consolidamento).
+Il provider attivo (`Providers/`) ora registra **tutti** i binding, inclusi quelli che
+prima esistevano solo in quello inattivo (IwexaApiService, catalogo, stock, webhook,
+repository). Il provider radice è quindi un duplicato non referenziato: **candidato
+alla rimozione**.
+
+> ⚠️ Nota storica — non ripetere questo errore. Fino al 2026-07-20 questo documento
+> affermava che i servizi mancanti «vengono normalmente risolti via auto-wiring del
+> container (singleton non strettamente necessari)». **Era falso**: `IwexaApiService`
+> ha un costruttore con tre argomenti scalari (`string $baseUrl, $apiKey, $hmacSecret`)
+> che l'auto-wiring non può risolvere. Il risultato era che `WebhookController` —
+> l'unico controller che dipende da quel servizio — non era costruibile e **ogni
+> webhook rispondeva 500**. Prima di assumere che un binding sia superfluo, verificalo:
+> `php artisan tinker --execute="app(\Webkul\PAYPOC\IwexaConnector\Services\IwexaApiService::class);"`
 
 ## Configurazione ([src/Config/iwexa-connector.php](packages/PAYPOC/IwexaConnector/src/Config/iwexa-connector.php))
 
@@ -83,8 +91,9 @@ Variabili `.env` (vedi anche `.env.example`):
 
 ```env
 IWEXA_API_BASE_URL=https://api.iwexa.com
-IWEXA_API_KEY=...
-IWEXA_HMAC_SECRET=...
+IWEXA_API_KEY=...                     # usata in USCITA (Bagisto → Iwexa Hub)
+IWEXA_HMAC_SECRET=...                 # firma, in entrata e in uscita
+IWEXA_SIGNATURE_TOLERANCE=300         # secondi di scarto accettati sul timestamp
 IWEXA_SYNC_JOB_RETRY_LIMIT=3
 IWEXA_SYNC_JOB_RETRY_DELAY=5          # minuti
 IWEXA_IDEMPOTENCY_KEY_EXPIRY=24       # ore
@@ -96,8 +105,10 @@ IWEXA_LOG_CHANNEL=daily
 
 ## Rotte
 
-### API — prefix `bagisto-api/iwexa`, middleware `api` + `throttle:60,1`
+### API — prefix `bagisto-api/iwexa`, middleware `api` + `throttle:60,1` + `iwexa.signature`
 ([src/Routes/api.php](packages/PAYPOC/IwexaConnector/src/Routes/api.php))
+
+**Tutte** le rotte API richiedono una firma HMAC valida (vedi Sicurezza).
 - `POST  /catalog/products/batch` — import batch prodotti
 - `PUT   /catalog/products/{sku}` — aggiorna prodotto
 - `POST  /catalog/stock` — aggiorna stock
@@ -119,7 +130,19 @@ namespace view `iwexa`.
 
 ## Installazione
 
-Il package va copiato in un'app Bagisto:
+In sviluppo il package **non va copiato**: si aggancia all'app Bagisto come repository
+`path` con `symlink: true`, così le modifiche in questo repo sono immediatamente attive
+nell'app. Nel `composer.json` dell'app:
+
+```json
+"repositories": [{ "type": "path", "url": "packages/*/*", "options": { "symlink": true } }],
+"require": { "webkul/iwexa-connector": "*@dev" }
+```
+
+Verifica rapida che l'aggancio sia vivo, dall'app Bagisto:
+`php artisan route:list | grep iwexa` (attese 29 rotte) e `php artisan migrate:status`.
+
+Comandi di publish (dall'app Bagisto):
 
 ```bash
 # da dentro l'app Bagisto
@@ -130,9 +153,36 @@ php artisan migrate
 ```
 
 ## Sicurezza e affidabilità
-- **HMAC-SHA256** su tutti i webhook (secret condiviso)
+
+### Autenticazione in ingresso — HMAC-SHA256
+
+Ogni richiesta verso `bagisto-api/iwexa/*` (webhook **e** endpoint API) deve essere
+firmata. Il controllo è nel middleware `iwexa.signature`
+([src/Http/Middleware/VerifyIwexaSignature.php](packages/PAYPOC/IwexaConnector/src/Http/Middleware/VerifyIwexaSignature.php)):
+
+| Header | Contenuto |
+|---|---|
+| `X-IWEXA-SIGNATURE` | `hash_hmac('sha256', body_grezzo + timestamp, IWEXA_HMAC_SECRET)` |
+| `X-IWEXA-TIMESTAMP` | Unix timestamp, entro ±`IWEXA_SIGNATURE_TOLERANCE` secondi da adesso |
+
+- Confronto a **tempo costante** (`hash_equals`)
+- **Fail closed**: se `IWEXA_HMAC_SECRET` è vuoto il middleware risponde `503`, non
+  lascia passare — un `.env` incompleto non deve aprire le API
+- Il timestamp nella firma limita la finestra di **replay**
+- Sulle richieste senza body (GET) si firma la stringa vuota + timestamp
+
+Il `WebhookController` valida la firma anche al proprio interno: ridondante rispetto
+al middleware, mantenuto come difesa in profondità.
+
+> ⚠️ **`IWEXA_API_KEY` è solo in uscita** (header `Bearer` nelle chiamate
+> Bagisto → Iwexa Hub, [IwexaApiService.php:61](packages/PAYPOC/IwexaConnector/src/Services/IwexaApiService.php#L61)).
+> Non autentica nulla in ingresso. Fino al 2026-07-20 questo documento dichiarava
+> «Bearer token per l'autenticazione API» come se fosse una protezione attiva: non è
+> mai esistita, e gli endpoint di scrittura (catalogo, stock, vendor, magazzini) erano
+> raggiungibili **senza alcuna credenziale**.
+
+### Altro
 - **Idempotenza**: chiavi di idempotenza + dedup webhook (`event_id` + `delivery_id`)
-- **Bearer token** per l'autenticazione API
 - **Rate limiting**: 60 richieste/minuto (`throttle:60,1`)
 - **Retry**: fino a 3 tentativi sui sync job falliti, con retry manuale da admin
 

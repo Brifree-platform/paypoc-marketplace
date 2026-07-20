@@ -6,6 +6,9 @@ return [
     'iwexa_api_key' => env('IWEXA_API_KEY'),
     'iwexa_hmac_secret' => env('IWEXA_HMAC_SECRET'),
 
+    // Max clock skew (seconds) accepted on inbound request signatures
+    'signature_tolerance_seconds' => env('IWEXA_SIGNATURE_TOLERANCE', 300),
+
     // Sync Job Configuration
     'sync_job_retry_limit' => env('IWEXA_SYNC_JOB_RETRY_LIMIT', 3),
     'sync_job_retry_delay_minutes' => env('IWEXA_SYNC_JOB_RETRY_DELAY', 5),
