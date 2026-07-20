@@ -1,0 +1,98 @@
+{
+  "numberOfResults": 1,
+  "items": [
+    {
+      "asin": "B0H83PBXFF",
+      "attributes": {
+        "is_liquid_double_sealed": [{ "value": true, "marketplace_id": "APJ6JRA9NG5V4" }],
+        "bullet_point": [
+          { "language_tag": "it_IT", "value": "Extrait De Parfum 30%, Limited Edition - una fragranza esclusiva ad alta concentrazione, pensata per offrire intensità, carattere e una persistenza straordinaria sulla pelle", "marketplace_id": "APJ6JRA9NG5V4" },
+          { "language_tag": "it_IT", "value": "Profumo unisex adatto a tutti i generi - raffinato, pensato sia per uomini che per donne, ideale nelle occasioni speciali e nei momenti in cui vuoi distinguerti con stile ed eleganza", "marketplace_id": "APJ6JRA9NG5V4" },
+          { "language_tag": "it_IT", "value": "Un'esperienza indimenticabile ispirato alla forza della natura, Aurora Blue avvolge i sensi con emozioni uniche lasciando un ricordo persistente simile alla freschezza in una foresta di cipressi", "marketplace_id": "APJ6JRA9NG5V4" },
+          { "language_tag": "it_IT", "value": "Persistenza eccezionale - La formula di Aurora Blue Extrait de Parfum assicura una fragranza intensa e duratura, che evolve elegantemente sulla pelle durante la giornata", "marketplace_id": "APJ6JRA9NG5V4" },
+          { "language_tag": "it_IT", "value": "Made in Italy e alta qualità - Estratto di Profumo da 100 ml, sviluppato con ingredienti accuratamente selezionati per garantire intensità, carattere e lunga durata", "marketplace_id": "APJ6JRA9NG5V4" }
+        ],
+        "hazmat": [
+          { "aspect": "proper_shipping_name", "value": "PERFUMERY PRODUCTS", "marketplace_id": "APJ6JRA9NG5V4" },
+          { "aspect": "united_nations_regulatory_id", "value": "UN1266", "marketplace_id": "APJ6JRA9NG5V4" },
+          { "aspect": "regulatory_packing_group", "value": "II", "marketplace_id": "APJ6JRA9NG5V4" },
+          { "aspect": "transportation_regulatory_class", "value": "3", "marketplace_id": "APJ6JRA9NG5V4" },
+          { "aspect": "exception", "value": "IT_LimitedQuantity", "marketplace_id": "APJ6JRA9NG5V4" }
+        ],
+        "scent": [{ "language_tag": "it_IT", "value": "Pompelmo", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "item_dimensions": [{ "width": { "unit": "centimeters", "value": 6 }, "length": { "unit": "centimeters", "value": 16 }, "height": { "unit": "centimeters", "value": 8.5 }, "marketplace_id": "APJ6JRA9NG5V4" }],
+        "product_description": [{ "language_tag": "it_IT", "value": "Aurora Blue ha toni molto intensi, grazie al cipresso, al muschio, al patchouli e al vetyver, che però vengono ammorbiditi grazie ad eleganti note di gelsomino, lavanda e mughetto e resi infine più freschi dalle note di pompelmo e neroli. top notes: Grapefuit, Neroly heart notes: Lavander, Jasemine, Lily of the Valley base notes: Cypress, Musk, Wood, Patchouli, Vetyver", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "unspsc_code": [{ "value": "53131620", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "product_expiration_type": [{ "language_tag": "it_IT", "value": "Expiration On Package", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "brand": [{ "language_tag": "it_IT", "value": "Lia Pascaniuc", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "is_expiration_dated_product": [{ "value": true, "marketplace_id": "APJ6JRA9NG5V4" }],
+        "gpsr_manufacturer_reference": [{ "gpsr_manufacturer_email_address": "art@liapascaniuc.com", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "item_form": [{ "language_tag": "it_IT", "value": "Nebulizzatore", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "flavor": [{ "language_tag": "it_IT", "value": "pompelmo", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "number_of_items": [{ "value": 1, "marketplace_id": "APJ6JRA9NG5V4" }],
+        "item_package_dimensions": [{ "length": { "unit": "centimeters", "value": 10 }, "width": { "unit": "centimeters", "value": 10 }, "height": { "unit": "centimeters", "value": 20 }, "marketplace_id": "APJ6JRA9NG5V4" }],
+        "liquid_volume": [{ "unit": "milliliters", "value": 100, "marketplace_id": "APJ6JRA9NG5V4" }],
+        "size": [{ "language_tag": "it_IT", "value": "100 ml (Confezione da 1)", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "fc_shelf_life": [{ "unit": "days", "value": 365, "marketplace_id": "APJ6JRA9NG5V4" }],
+        "part_number": [{ "value": "8059777990122", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "target_gender": [{ "value": "unisex", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "color": [{ "language_tag": "it_IT", "value": "blu", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "contains_liquid_contents": [{ "value": true, "marketplace_id": "APJ6JRA9NG5V4" }],
+        "item_package_weight": [{ "unit": "kilograms", "value": 0.5, "marketplace_id": "APJ6JRA9NG5V4" }],
+        "manufacturer": [{ "language_tag": "it_IT", "value": "Gea Profumi S.R.L.", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "safety_warning": [{ "language_tag": "it_IT", "value": "Avvertenze di sicurezza: Liquido e vapori facilmente infiammabili. Tenere lontano da fonti di calore, superfici calde, scintille o fiamme libere. Non vaporizzare su una fiamma o corpo incandescente. Evitare il contatto con gli occhi e la pelle irritata; in caso di contatto, sciacquare abbondantemente con acqua. Tenere fuori dalla portata dei bambini. Solo per uso esterno. Non ingerire.", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "externally_assigned_product_identifier": [{ "value": "8059777990122", "type": "ean", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "recommended_browse_nodes": [{ "value": "6306983031", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "ingredients": [{ "language_tag": "it_IT", "value": "Alcohol Denat., Parfum, Pinene, Acetyl Cedrene, Pogostemon Cablin Oil, Juniperus Virginiana Oil, Limonene, Terpineol, Beta-caryophyllene, Terpinolene, Linalool, Alpha-terpinene, Camphor, Geraniol", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "model_number": [{ "value": "8059777990122", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "item_name": [{ "language_tag": "it_IT", "value": "Lia Pascaniuc - Aurora Blue Extrait de Parfum Unisex 100 ml, Fragranza Intensa e Fresca con Pompelmo, Neroli, Lavanda, Gelsomino, Cipresso, Patchouly, Vetiver, Muschio, Legno", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "list_price": [{ "value_with_tax": 170, "currency": "EUR", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "batteries_required": [{ "value": false, "marketplace_id": "APJ6JRA9NG5V4" }],
+        "lifestyle": [{ "language_tag": "it_IT", "value": "Bellezza Mass", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "product_site_launch_date": [{ "value": "2026-07-08T11:49:40.222Z", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "target_audience_keyword": [{ "language_tag": "it_IT", "value": "Aurora Blue - extrait de parfum, Lia Pascaniuc", "marketplace_id": "APJ6JRA9NG5V4" }],
+        "unit_count": [{ "type": { "language_tag": "it_IT", "value": "millilitro" }, "value": 100, "marketplace_id": "APJ6JRA9NG5V4" }]
+      },
+      "images": [
+        {
+          "marketplaceId": "APJ6JRA9NG5V4",
+          "images": [
+            { "variant": "MAIN", "link": "https://m.media-amazon.com/images/I/41+LsHM7qEL.jpg", "height": 1000, "width": 1000 },
+            { "variant": "MAIN", "link": "https://m.media-amazon.com/images/I/31igWsKJqTL.jpg", "height": 500, "width": 500 },
+            { "variant": "MAIN", "link": "https://m.media-amazon.com/images/I/31igWsKJqTL._SL75_.jpg", "height": 75, "width": 75 },
+            { "variant": "PT01", "link": "https://m.media-amazon.com/images/I/51vGDaYCC+L.jpg", "height": 1000, "width": 1000 },
+            { "variant": "PT01", "link": "https://m.media-amazon.com/images/I/411vJ--Q-FL.jpg", "height": 500, "width": 500 },
+            { "variant": "PT02", "link": "https://m.media-amazon.com/images/I/61IiE5Y0W1L.jpg", "height": 1000, "width": 1000 },
+            { "variant": "PT02", "link": "https://m.media-amazon.com/images/I/51suF3FijoL.jpg", "height": 500, "width": 500 },
+            { "variant": "PT03", "link": "https://m.media-amazon.com/images/I/61qSqTo8ChL.jpg", "height": 1000, "width": 1000 },
+            { "variant": "PT04", "link": "https://m.media-amazon.com/images/I/61F1Hzv6KkL.jpg", "height": 1000, "width": 1000 },
+            { "variant": "PT05", "link": "https://m.media-amazon.com/images/I/51VJPqsTLmL.jpg", "height": 1000, "width": 1000 },
+            { "variant": "PT06", "link": "https://m.media-amazon.com/images/I/61p7D6SJZCL.jpg", "height": 1000, "width": 1000 },
+            { "variant": "PT07", "link": "https://m.media-amazon.com/images/I/61mZSohDXIL.jpg", "height": 1000, "width": 1000 }
+          ]
+        }
+      ],
+      "productTypes": [{ "marketplaceId": "APJ6JRA9NG5V4", "productType": "PERSONAL_FRAGRANCE" }],
+      "summaries": [
+        {
+          "marketplaceId": "APJ6JRA9NG5V4",
+          "adultProduct": false,
+          "autographed": false,
+          "brand": "Lia Pascaniuc",
+          "browseClassification": { "displayName": "Estratto di profumo", "classificationId": "6306983031" },
+          "color": "blu",
+          "itemClassification": "BASE_PRODUCT",
+          "itemName": "Lia Pascaniuc - Aurora Blue Extrait de Parfum Unisex 100 ml, Fragranza Intensa e Fresca con Pompelmo, Neroli, Lavanda, Gelsomino, Cipresso, Patchouly, Vetiver, Muschio, Legno",
+          "manufacturer": "Gea Profumi S.R.L.",
+          "memorabilia": false,
+          "modelNumber": "8059777990122",
+          "partNumber": "8059777990122",
+          "size": "100 ml (Confezione da 1)",
+          "tradeInEligible": false,
+          "websiteDisplayGroup": "beauty_display_on_website",
+          "websiteDisplayGroupName": "Bellezza"
+        }
+      ]
+    }
+  ]
+}
