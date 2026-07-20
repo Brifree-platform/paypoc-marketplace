@@ -1,0 +1,33 @@
+# Dipendenze
+/vendor/
+**/vendor/
+node_modules/
+
+# Ambiente — mai committare credenziali (.env.example va invece versionato)
+.env
+.env.*
+!.env.example
+
+# Laravel
+/storage/*.key
+/bootstrap/cache/*.php
+
+# Build frontend
+/public/build/
+/public/hot
+/public/storage
+
+# Log e cache
+*.log
+.phpunit.result.cache
+.phpunit.cache/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
