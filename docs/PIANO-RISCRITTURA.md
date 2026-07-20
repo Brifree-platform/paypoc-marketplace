@@ -113,6 +113,13 @@ fidati", ma "il tuo Hub deve superare questa stessa suite". Quando l'Hub reale a
 
 **Verifica:** i payload del mock validano contro lo schema OpenAPI.
 
+> ⚠️ **Bloccante prima della fase 1.** La lettura completa dell'handover (2026-07-20)
+> ha rivelato che `PayPoc_Spec_IT.pdf` §6 descrive un'API **diversa** dall'OpenAPI v3.0:
+> prezzi e IVA per paese, identità per GTIN, sync incrementale, contenuto multi-lingua,
+> Bearer + HMAC. Le due fonti concordano sulla direzione (pull) ma non sui dettagli, e
+> il modello dati della fase 1 dipende da quale prevale.
+> Vedi **[RICONCILIAZIONE-CONTRATTO.md](RICONCILIAZIONE-CONTRATTO.md)** — 6 decisioni aperte.
+
 ### Fase 1 — Modello dati allineato
 
 Migration e model che rispecchiano lo schema `Product` del contratto.
