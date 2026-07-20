@@ -58,23 +58,16 @@ vendor, warehouse, warehouse stock, shipping zone/rate, routing quote.
 `CatalogSyncStarted`, `CatalogSyncCompleted`, `SyncJobFailed`,
 `ProductMappingRequired`, `AttributeProvisioningRequired`
 
-## ⚠️ Doppio ServiceProvider (importante)
+## ServiceProvider
 
-Esistono **due** classi `IwexaConnectorServiceProvider` con lo stesso nome ma namespace diversi:
+C'è **un solo** provider: [src/Providers/IwexaConnectorServiceProvider.php](packages/PAYPOC/IwexaConnector/src/Providers/IwexaConnectorServiceProvider.php)
+(namespace `...\Providers`), registrato in `composer.json`. Registra tutti i servizi
+e i repository, l'alias middleware `iwexa.signature`, rotte, view e traduzioni.
+I nuovi servizi vanno aggiunti qui.
 
-1. [src/Providers/IwexaConnectorServiceProvider.php](packages/PAYPOC/IwexaConnector/src/Providers/IwexaConnectorServiceProvider.php)
-   — namespace `...\Providers`. **È quello registrato in `composer.json`.**
-   Registra: Vendor, Warehouse, WarehouseStock, ShippingZone, ShippingRate, Routing.
-   Carica anche le traduzioni (`loadTranslationsFrom`).
-2. [src/IwexaConnectorServiceProvider.php](packages/PAYPOC/IwexaConnector/src/IwexaConnectorServiceProvider.php)
-   — namespace radice `...\IwexaConnector`. **Non referenziato in composer.json.**
-   Registra: IwexaApiService, CatalogImport, StockUpdate, CategoryMapping,
-   ProductTypeMapping, AttributeMapping, AttributeProvisioning, Webhook + relativi repository.
-
-Il provider attivo (`Providers/`) ora registra **tutti** i binding, inclusi quelli che
-prima esistevano solo in quello inattivo (IwexaApiService, catalogo, stock, webhook,
-repository). Il provider radice è quindi un duplicato non referenziato: **candidato
-alla rimozione**.
+Fino al 2026-07-20 esisteva un secondo provider omonimo in `src/` con namespace radice,
+non referenziato da nessuna parte, che registrava un insieme **disgiunto** di binding.
+È stato rimosso dopo aver consolidato le sue registrazioni in quello attivo.
 
 > ⚠️ Nota storica — non ripetere questo errore. Fino al 2026-07-20 questo documento
 > affermava che i servizi mancanti «vengono normalmente risolti via auto-wiring del
@@ -187,9 +180,24 @@ al middleware, mantenuto come difesa in profondità.
 - **Retry**: fino a 3 tentativi sui sync job falliti, con retry manuale da admin
 
 ## Test
-Cartelle `tests/Unit/` e `tests/Feature/` predisposte in
-[packages/PAYPOC/IwexaConnector/tests/](packages/PAYPOC/IwexaConnector/tests/)
-(al momento senza file di test). Non è ancora configurato un runner a livello di repo.
+
+I test girano con **Pest, dall'app Bagisto** (il repo del package non ha un runner proprio):
+
+```bash
+# dall'app Bagisto
+./vendor/bin/pest --testsuite="Iwexa Connector Unit Test"
+```
+
+Perché funzioni, nell'app Bagisto servono due registrazioni una tantum:
+- `phpunit.xml` → un `<testsuite>` che punta a `packages/PAYPOC/IwexaConnector/tests/Unit`
+- `tests/Pest.php` → `uses(Tests\TestCase::class)->in('../packages/PAYPOC/IwexaConnector/tests');`
+
+Copertura attuale: [tests/Unit/VerifyIwexaSignatureTest.php](packages/PAYPOC/IwexaConnector/tests/Unit/VerifyIwexaSignatureTest.php)
+— 10 test sul middleware HMAC (firma valida, mancante, errata, body alterato, replay,
+timestamp futuro/non numerico, body vuoto, fail-closed senza secret). Non toccano il
+database: istanziano il middleware direttamente.
+
+Servizi, import catalogo e webhook sono ancora **senza copertura**.
 
 ## Convenzioni
 - Codice e identificatori in inglese; alcuni messaggi di commit/PR in italiano.
