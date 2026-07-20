@@ -1,31 +1,38 @@
 {
-  "locale": "it-IT",
+  "locale": "it",
   "source": "https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt",
   "nodes": [
     {
       "googleTaxonomyId": 2912,
       "googleTaxonomyPath": "Food, Beverages & Tobacco > Food Items > Pasta & Noodles > Pasta",
-      "localizedPath": ["Alimentari", "Pasta e Riso", "Pasta"]
+      "localizedPath": {
+        "it": ["Alimentari", "Pasta e Riso", "Pasta"],
+        "en": ["Food, Beverages & Tobacco", "Food Items", "Pasta & Noodles", "Pasta"]
+      }
     },
     {
       "googleTaxonomyId": 2660,
       "googleTaxonomyPath": "Food, Beverages & Tobacco > Food Items > Condiments & Sauces > Tomato Sauce",
-      "localizedPath": ["Alimentari", "Sughi e Conserve", "Passate"]
+      "localizedPath": {
+        "it": ["Alimentari", "Sughi e Conserve", "Passate"],
+        "en": ["Food, Beverages & Tobacco", "Food Items", "Condiments & Sauces", "Tomato Sauce"]
+      }
     },
     {
-      "googleTaxonomyId": 5070,
-      "googleTaxonomyPath": "Health & Beauty > Personal Care > Hair Care > Hair Shampoos",
-      "localizedPath": ["Bellezza", "Cura della Persona", "Capelli", "Shampoo"]
-    },
-    {
-      "googleTaxonomyId": 270,
-      "googleTaxonomyPath": "Electronics > Communications > Telephony > Mobile Phones",
-      "localizedPath": ["Elettronica", "Telefonia", "Cellulari"]
+      "googleTaxonomyId": 479,
+      "googleTaxonomyPath": "Health & Beauty > Personal Care > Cosmetics > Perfume & Cologne",
+      "localizedPath": {
+        "it": ["Salute e bellezza", "Cura della persona", "Cosmetici", "Profumi e colonie"],
+        "en": ["Health & Beauty", "Personal Care", "Cosmetics", "Perfume & Cologne"]
+      }
     },
     {
       "googleTaxonomyId": 500047,
       "googleTaxonomyPath": "Electronics > Electronics Accessories > Power > Batteries",
-      "localizedPath": ["Elettronica", "Accessori", "Batterie e Power Bank"]
+      "localizedPath": {
+        "it": ["Elettronica", "Accessori", "Batterie e Power Bank"],
+        "en": ["Electronics", "Electronics Accessories", "Power", "Batteries"]
+      }
     }
   ]
 }

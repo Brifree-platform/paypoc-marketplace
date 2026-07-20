@@ -18,10 +18,13 @@ $event = $argv[1] ?? 'productUpdated';
 $url   = $argv[2] ?? 'http://127.0.0.1:8899/bagisto-api/iwexa/webhooks';
 
 $products = $hub->products();
+$country  = getenv('PAYPOC_COUNTRY') ?: Hub::DEFAULT_COUNTRY;
+$locale   = getenv('PAYPOC_LOCALE') ?: Hub::DEFAULT_LOCALE;
 
 $payloads = [
-    // Contract: il webhook productUpdated porta lo schema Product completo
-    'productUpdated' => $products[0],
+    // Il webhook productUpdated porta lo schema Product già risolto per
+    // paese e lingua, esattamente come GET /products (decisioni 1 e 5).
+    'productUpdated' => $hub->project2($products[0], $country, $locale),
 
     'stockChanged' => [
         'externalProductId' => $products[1]['externalProductId'],
@@ -37,8 +40,9 @@ $payloads = [
             'vendorCode'        => $products[0]['vendorCode'],
             'type'              => $products[0]['fulfillment']['type'],
             'status'            => 'shipped',
-            'trackingNumber'    => 'IWX1234567890',
-            'trackingUrl'       => 'https://tracking.iwexa.example/IWX1234567890',
+            'trackingNumber'    => 'PPC1234567890',
+            // Decisione 3: il tracking è su dominio PayPoc, mai Iwexa/ShippyPro
+            'trackingUrl'       => 'https://tracking.paypoc.example/PPC1234567890',
             'carrier'           => 'BRT',
             'estimatedDelivery' => date('Y-m-d', strtotime('+3 days')),
             'items'             => [['externalProductId' => $products[0]['externalProductId'], 'quantity' => 1]],

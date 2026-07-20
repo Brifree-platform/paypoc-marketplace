@@ -1,8 +1,32 @@
 # Riconciliazione del contratto Iwexa ↔ PayPoc
 
 > **Data:** 2026-07-20
-> **Stato:** decisioni aperte, bloccanti per la fase 1 del piano di riscrittura
+> **Stato:** ✅ **decise tutte e sei** — recepite nel contratto v3.1 e nel mock
 > **Origine:** lettura completa dell'handover (`~/Desktop/PayPoc_Bagisto_Handover/`)
+
+## Decisioni prese
+
+| # | Questione | Decisione |
+|---|---|---|
+| 1 | Prezzi e IVA per paese | **Valore singolo risolto per `?country=`** — ogni paese ha la propria aliquota |
+| 2 | Chiave d'identità prodotto | **EAN** — lo slug resta per gli URL, l'ASIN non è la chiave |
+| 3 | Iwexa visibile al cliente | **No** — magazzino `PAYPOC-CENTRAL`, tracking su dominio PayPoc |
+| 4 | Autenticazione | **Bearer + HMAC + finestra anti-replay** |
+| 5 | Contenuto multi-lingua | **Sì** — risolto per `?locale=` |
+| 6 | Sync incrementale | **Sì** — `?updated_since=` su `/products` |
+
+Recepite in:
+- **[iwexa_hub_openapi_v3.1.yaml](iwexa_hub_openapi_v3.1.yaml)** — il contratto da consegnare al programmatore
+- **[tools/mock-hub](../tools/mock-hub/)** — implementazione eseguibile, 63 controlli di conformità
+
+Aggiunti inoltre al contratto due oggetti emersi dai payload reali e assenti da
+entrambe le specifiche precedenti: **`hazmat`** (merci pericolose — il profumo
+d'esempio è UN1266, infiammabile) e **`compliance`** (dati GPSR obbligatori per
+legge sui cosmetici in UE).
+
+Il resto del documento conserva l'analisi che ha portato a queste decisioni.
+
+---
 
 ---
 

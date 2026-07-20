@@ -86,8 +86,25 @@ class AmazonMapper
             $warnings[] = 'ingredienti e avvertenze di sicurezza presenti: informazioni obbligatorie per legge sui cosmetici in UE (GPSR). Lo schema Product del contratto non le prevede.';
         }
 
+        // Decisione 2: l'identità è l'EAN, non l'ASIN. L'ASIN resta come
+        // riferimento Amazon, ma non è la chiave del contratto.
+        $ean = null;
+
+        foreach ($attr['externally_assigned_product_identifier'] ?? [] as $id) {
+            if (strtolower((string) ($id['type'] ?? '')) === 'ean') {
+                $ean = (string) $id['value'];
+                break;
+            }
+        }
+
+        $ean ??= $attr['part_number'][0]['value'] ?? null;
+
+        if ($ean === null) {
+            $missing[] = 'externalProductId — nessun EAN nel payload (né externally_assigned_product_identifier né part_number)';
+        }
+
         $product = [
-            'externalProductId' => $item['asin'] ?? null,
+            'externalProductId' => $ean,
             'productSlug'       => $name ? $this->slug($name) : null,
             'vendorSlug'        => null,
             'vendorCode'        => null,
@@ -107,6 +124,14 @@ class AmazonMapper
             'stockQuantity'     => null,
             'fulfillment'       => null,
             'shippingPolicy'    => null,
+            // Campi aggiunti al contratto v3.1 dopo l'analisi del payload reale
+            'hazmat'            => $this->hazmatContract($attr),
+            'compliance'        => array_filter([
+                'manufacturer'  => $this->attr($attr, 'manufacturer'),
+                'contactEmail'  => $attr['gpsr_manufacturer_reference'][0]['gpsr_manufacturer_email_address'] ?? null,
+                'ingredients'   => $this->attr($attr, 'ingredients'),
+                'safetyWarning' => $this->attr($attr, 'safety_warning'),
+            ], fn ($v) => $v !== null) ?: null,
             'amazonUrl'         => isset($item['asin']) ? 'https://www.amazon.it/dp/' . $item['asin'] : null,
         ];
 
@@ -149,6 +174,24 @@ class AmazonMapper
             'amazonBrowseNodeId' => $summary['browseClassification']['classificationId'] ?? null,
             'amazonBrowseName'   => $summary['browseClassification']['displayName'] ?? null,
             'hazmat'             => $this->hazmatAspects($attr) ?: null,
+        ], fn ($v) => $v !== null);
+    }
+
+    /** Hazmat nella forma prevista dal contratto v3.1 */
+    private function hazmatContract(array $attr): ?array
+    {
+        $a = $this->hazmatAspects($attr);
+
+        if (! $a) {
+            return null;
+        }
+
+        return array_filter([
+            'unRegulatoryId'     => $a['united_nations_regulatory_id'] ?? null,
+            'properShippingName' => $a['proper_shipping_name'] ?? null,
+            'transportClass'     => $a['transportation_regulatory_class'] ?? null,
+            'packingGroup'       => $a['regulatory_packing_group'] ?? null,
+            'countryExceptions'  => $a['exceptions'] ?? null,
         ], fn ($v) => $v !== null);
     }
 

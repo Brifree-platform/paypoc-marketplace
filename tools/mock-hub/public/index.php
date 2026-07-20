@@ -1,13 +1,15 @@
 <?php
 
 /**
- * Mock Iwexa Hub — implementa iwexa_hub_openapi.yaml v3.0
+ * Mock Iwexa Hub — contratto PayPoc v3.1
  *
- * Riferimento eseguibile del contratto Iwexa <-> PayPoc. Serve a due scopi:
+ * Riferimento eseguibile del contratto Iwexa <-> PayPoc, aggiornato con le
+ * sei decisioni di riconciliazione (docs/RICONCILIAZIONE-CONTRATTO.md).
+ * Serve a due scopi:
  *  1. permettere lo sviluppo del connettore PayPoc contro qualcosa di reale
  *  2. fare da criterio di accettazione per l'Hub vero (vedi ../README.md)
  *
- * Avvio:  php -S 127.0.0.1:8800 -t public
+ * Avvio:  php -d opcache.enable=0 -S 127.0.0.1:8800 -t public
  * Nessuna dipendenza esterna: PHP 8.1+ e basta.
  */
 
@@ -23,29 +25,28 @@ $body   = file_get_contents('php://input') ?: '';
 
 header('Content-Type: application/json; charset=utf-8');
 
-// --- Autenticazione HMAC ------------------------------------------------
-// Il contratto (securitySchemes.HmacAuth) firma il solo body. Qui firmiamo
-// body + timestamp: senza timestamp una richiesta catturata resta
-// riutilizzabile per sempre. Vedi PIANO-RISCRITTURA.md §5 — decisione da
-// riportare nella specifica prima che l'Hub vero venga scritto.
-if (! $hub->verifySignature($body, $_SERVER)) {
+// --- Autenticazione: Bearer + HMAC + finestra anti-replay (decisione 4) ---
+[$authorized, $reason] = $hub->authorize($body, $_SERVER);
+
+if (! $authorized) {
     http_response_code(401);
-    echo json_encode(['error' => 'Invalid or missing signature'], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['status' => 'error', 'error' => $reason], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 // --- Routing ------------------------------------------------------------
 $routes = [
-    ['GET',  '#^/api/v1/products$#',                    fn ($m) => $hub->listProducts($_GET)],
-    ['GET',  '#^/api/v1/products/([\w-]+)$#',           fn ($m) => $hub->getProduct($m[1])],
-    ['GET',  '#^/api/v1/stock/([\w-]+)$#',              fn ($m) => $hub->getStock($m[1])],
-    ['GET',  '#^/api/v1/vendors$#',                     fn ($m) => $hub->listVendors()],
-    ['GET',  '#^/api/v1/shipping-quote$#',              fn ($m) => $hub->shippingQuote($_GET)],
-    ['GET',  '#^/api/v1/taxonomy$#',                    fn ($m) => $hub->taxonomy($_GET)],
-    ['POST', '#^/api/v1/orders$#',                      fn ($m) => $hub->createOrder($body)],
-    ['GET',  '#^/api/v1/orders/([\w-]+)$#',             fn ($m) => $hub->getOrder($m[1])],
-    ['POST', '#^/api/v1/orders/([\w-]+)/cancel$#',      fn ($m) => $hub->cancelOrder($m[1])],
-    ['POST', '#^/api/v1/orders/([\w-]+)/return$#',      fn ($m) => $hub->returnOrder($m[1], $body)],
+    ['GET',  '#^/api/v1/products$#',                fn ($m) => $hub->listProducts($_GET)],
+    // Accetta EAN (identità, decisione 2) oppure slug (URL)
+    ['GET',  '#^/api/v1/products/([\w.-]+)$#',      fn ($m) => $hub->getProduct($m[1], $_GET)],
+    ['GET',  '#^/api/v1/stock/([\w.-]+)$#',         fn ($m) => $hub->getStock($m[1])],
+    ['GET',  '#^/api/v1/vendors$#',                 fn ($m) => $hub->listVendors()],
+    ['GET',  '#^/api/v1/shipping-quote$#',          fn ($m) => $hub->shippingQuote($_GET)],
+    ['GET',  '#^/api/v1/taxonomy$#',                fn ($m) => $hub->taxonomy($_GET)],
+    ['POST', '#^/api/v1/orders$#',                  fn ($m) => $hub->createOrder($body)],
+    ['GET',  '#^/api/v1/orders/([\w-]+)$#',         fn ($m) => $hub->getOrder($m[1])],
+    ['POST', '#^/api/v1/orders/([\w-]+)/cancel$#',  fn ($m) => $hub->cancelOrder($m[1])],
+    ['POST', '#^/api/v1/orders/([\w-]+)/return$#',  fn ($m) => $hub->returnOrder($m[1], $body)],
 ];
 
 foreach ($routes as [$verb, $pattern, $handler]) {

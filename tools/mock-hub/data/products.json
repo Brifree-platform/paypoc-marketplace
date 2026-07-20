@@ -1,99 +1,92 @@
 [
   {
-    "externalProductId": "IWX-PRD-10001",
+    "externalProductId": "8076809513722",
     "productSlug": "barilla-spaghetti-n5-500g",
     "vendorSlug": "barilla",
     "vendorCode": "1019",
     "vendorName": "Barilla",
-    "name": "Barilla Spaghetti n.5 — 500g",
-    "description": "Spaghetti di semola di grano duro, trafilati al bronzo.",
-    "bullets": ["Semola di grano duro", "Trafilatura al bronzo", "Cottura 9 minuti"],
-    "images": ["https://cdn.iwexa.example/img/barilla-spaghetti-1.jpg"],
+    "updatedAt": "2026-07-18T09:12:00Z",
+    "i18n": {
+      "it": {
+        "name": "Barilla Spaghetti n.5 — 500g",
+        "description": "Spaghetti di semola di grano duro, trafilati al bronzo.",
+        "bullets": ["Semola di grano duro", "Trafilatura al bronzo", "Cottura 9 minuti"]
+      },
+      "en": {
+        "name": "Barilla Spaghetti no.5 — 500g",
+        "description": "Durum wheat semolina spaghetti, bronze-drawn.",
+        "bullets": ["Durum wheat semolina", "Bronze-drawn", "9 minute cooking time"]
+      }
+    },
+    "images": ["https://cdn.paypoc.example/img/barilla-spaghetti-1.jpg"],
     "brand": "Barilla",
     "category": {
       "googleTaxonomyId": 2912,
       "googleTaxonomyPath": "Food, Beverages & Tobacco > Food Items > Pasta & Noodles > Pasta",
-      "localizedPath": ["Alimentari", "Pasta e Riso", "Pasta"]
+      "localizedPath": {
+        "it": ["Alimentari", "Pasta e Riso", "Pasta"],
+        "en": ["Food, Beverages & Tobacco", "Food Items", "Pasta & Noodles", "Pasta"]
+      }
     },
-    "listPrice": 1.89,
-    "sellPrice": 1.49,
-    "vatRate": 0.04,
-    "maxApplicableValue": 0.75,
-    "currency": "EUR",
+    "pricing": {
+      "IT": { "listPrice": 1.89, "sellPrice": 1.49, "vatRate": 0.04 },
+      "FR": { "listPrice": 2.09, "sellPrice": 1.79, "vatRate": 0.055 },
+      "DE": { "listPrice": 1.99, "sellPrice": 1.69, "vatRate": 0.07 }
+    },
     "inStock": true,
     "stockQuantity": 420,
     "fulfillment": {
       "type": "FBI",
-      "warehouseCode": "IWEXA-CENTRAL",
+      "warehouseCode": "PAYPOC-CENTRAL",
       "prepTimeDays": 1,
       "deliveryTimeDays": { "min": 2, "max": 4 }
     },
     "shippingPolicy": {
-      "country": "IT",
-      "cost": 4.5,
-      "freeShippingThreshold": 39,
-      "alwaysFree": false
+      "IT": { "cost": 4.5, "freeShippingThreshold": 39, "alwaysFree": false },
+      "FR": { "cost": 6.9, "freeShippingThreshold": 49, "alwaysFree": false },
+      "DE": { "cost": 5.9, "freeShippingThreshold": 45, "alwaysFree": false }
     },
-    "amazonUrl": "https://www.amazon.it/dp/B00EXAMPLE1"
-  },
-  {
-    "externalProductId": "IWX-PRD-10002",
-    "productSlug": "de-cecco-penne-rigate-500g",
-    "vendorSlug": "dececco",
-    "vendorCode": "1042",
-    "vendorName": "De Cecco",
-    "name": "De Cecco Penne Rigate n.41 — 500g",
-    "description": "Penne rigate di semola di grano duro.",
-    "bullets": ["Essiccazione lenta", "Trafilatura al bronzo"],
-    "images": ["https://cdn.iwexa.example/img/dececco-penne-1.jpg"],
-    "brand": "De Cecco",
-    "category": {
-      "googleTaxonomyId": 2912,
-      "googleTaxonomyPath": "Food, Beverages & Tobacco > Food Items > Pasta & Noodles > Pasta",
-      "localizedPath": ["Alimentari", "Pasta e Riso", "Pasta"]
-    },
-    "listPrice": 2.19,
-    "sellPrice": 1.99,
-    "vatRate": 0.04,
-    "maxApplicableValue": 0.87,
-    "currency": "EUR",
-    "inStock": true,
-    "stockQuantity": 12,
-    "fulfillment": {
-      "type": "FBV",
-      "warehouseCode": "VENDOR-1042",
-      "prepTimeDays": 2,
-      "deliveryTimeDays": { "min": 3, "max": 6 }
-    },
-    "shippingPolicy": {
-      "country": "IT",
-      "cost": 12.0,
-      "freeShippingThreshold": 39,
-      "alwaysFree": false
+    "hazmat": null,
+    "compliance": {
+      "manufacturer": "Barilla G. e R. Fratelli S.p.A.",
+      "contactEmail": "info@barilla.com"
     },
     "amazonUrl": null
   },
   {
-    "externalProductId": "IWX-PRD-10003",
+    "externalProductId": "8005110002106",
     "productSlug": "mutti-passata-pomodoro-700g",
     "vendorSlug": "mutti",
     "vendorCode": "1077",
     "vendorName": "Mutti",
-    "name": "Mutti Passata di Pomodoro — 700g",
-    "description": "Passata di pomodoro 100% italiano.",
-    "bullets": ["100% pomodoro italiano", "Senza conservanti"],
-    "images": ["https://cdn.iwexa.example/img/mutti-passata-1.jpg"],
+    "updatedAt": "2026-07-19T14:40:00Z",
+    "i18n": {
+      "it": {
+        "name": "Mutti Passata di Pomodoro — 700g",
+        "description": "Passata di pomodoro 100% italiano.",
+        "bullets": ["100% pomodoro italiano", "Senza conservanti"]
+      },
+      "en": {
+        "name": "Mutti Tomato Passata — 700g",
+        "description": "100% Italian tomato passata.",
+        "bullets": ["100% Italian tomatoes", "No preservatives"]
+      }
+    },
+    "images": ["https://cdn.paypoc.example/img/mutti-passata-1.jpg"],
     "brand": "Mutti",
     "category": {
       "googleTaxonomyId": 2660,
       "googleTaxonomyPath": "Food, Beverages & Tobacco > Food Items > Condiments & Sauces > Tomato Sauce",
-      "localizedPath": ["Alimentari", "Sughi e Conserve", "Passate"]
+      "localizedPath": {
+        "it": ["Alimentari", "Sughi e Conserve", "Passate"],
+        "en": ["Food, Beverages & Tobacco", "Food Items", "Condiments & Sauces", "Tomato Sauce"]
+      }
     },
-    "listPrice": 1.99,
-    "sellPrice": 1.79,
-    "vatRate": 0.04,
-    "maxApplicableValue": 0.79,
-    "currency": "EUR",
+    "pricing": {
+      "IT": { "listPrice": 1.99, "sellPrice": 1.79, "vatRate": 0.04 },
+      "FR": { "listPrice": 2.29, "sellPrice": 2.09, "vatRate": 0.055 },
+      "DE": { "listPrice": 2.19, "sellPrice": 1.99, "vatRate": 0.07 }
+    },
     "inStock": true,
     "stockQuantity": 88,
     "fulfillment": {
@@ -103,108 +96,126 @@
       "deliveryTimeDays": { "min": 2, "max": 5 }
     },
     "shippingPolicy": {
-      "country": "IT",
-      "cost": 6.9,
-      "freeShippingThreshold": null,
-      "alwaysFree": true
+      "IT": { "cost": 6.9, "freeShippingThreshold": null, "alwaysFree": true },
+      "FR": { "cost": 8.9, "freeShippingThreshold": null, "alwaysFree": true },
+      "DE": { "cost": 7.9, "freeShippingThreshold": null, "alwaysFree": true }
+    },
+    "hazmat": null,
+    "compliance": {
+      "manufacturer": "Mutti S.p.A.",
+      "contactEmail": "info@mutti-parma.com"
     },
     "amazonUrl": null
   },
   {
-    "externalProductId": "IWX-PRD-20001",
-    "productSlug": "loreal-elvive-shampoo-400ml",
-    "vendorSlug": "loreal",
-    "vendorCode": "2011",
-    "vendorName": "L'Oréal",
-    "name": "L'Oréal Elvive Shampoo Riparatore — 400ml",
-    "description": "Shampoo riparatore per capelli danneggiati.",
-    "bullets": ["Con ceramide", "Per capelli danneggiati"],
-    "images": ["https://cdn.iwexa.example/img/loreal-elvive-1.jpg"],
-    "brand": "L'Oréal",
+    "externalProductId": "8059777990122",
+    "productSlug": "lia-pascaniuc-aurora-blue-extrait-de-parfum",
+    "vendorSlug": "gea-profumi",
+    "vendorCode": "2044",
+    "vendorName": "Gea Profumi",
+    "updatedAt": "2026-07-20T08:00:00Z",
+    "i18n": {
+      "it": {
+        "name": "Lia Pascaniuc — Aurora Blue Extrait de Parfum Unisex 100 ml",
+        "description": "Aurora Blue ha toni molto intensi, grazie al cipresso, al muschio, al patchouli e al vetyver, ammorbiditi da note di gelsomino, lavanda e mughetto, resi più freschi da pompelmo e neroli.",
+        "bullets": [
+          "Extrait De Parfum 30%, Limited Edition",
+          "Profumo unisex adatto a tutti i generi",
+          "Persistenza eccezionale",
+          "Made in Italy"
+        ]
+      },
+      "en": {
+        "name": "Lia Pascaniuc — Aurora Blue Extrait de Parfum Unisex 100 ml",
+        "description": "Aurora Blue has intense tones from cypress, musk, patchouli and vetiver, softened by jasmine, lavender and lily of the valley, freshened by grapefruit and neroli.",
+        "bullets": [
+          "Extrait De Parfum 30%, Limited Edition",
+          "Unisex fragrance",
+          "Exceptional longevity",
+          "Made in Italy"
+        ]
+      }
+    },
+    "images": [
+      "https://cdn.paypoc.example/img/aurora-blue-main.jpg",
+      "https://cdn.paypoc.example/img/aurora-blue-pt01.jpg"
+    ],
+    "brand": "Lia Pascaniuc",
     "category": {
-      "googleTaxonomyId": 5070,
-      "googleTaxonomyPath": "Health & Beauty > Personal Care > Hair Care > Hair Shampoos",
-      "localizedPath": ["Bellezza", "Cura della Persona", "Capelli", "Shampoo"]
+      "googleTaxonomyId": 479,
+      "googleTaxonomyPath": "Health & Beauty > Personal Care > Cosmetics > Perfume & Cologne",
+      "localizedPath": {
+        "it": ["Salute e bellezza", "Cura della persona", "Cosmetici", "Profumi e colonie"],
+        "en": ["Health & Beauty", "Personal Care", "Cosmetics", "Perfume & Cologne"]
+      }
     },
-    "listPrice": 7.9,
-    "sellPrice": 5.9,
-    "vatRate": 0.22,
-    "maxApplicableValue": 3.16,
-    "currency": "EUR",
+    "pricing": {
+      "IT": { "listPrice": 170.0, "sellPrice": 149.0, "vatRate": 0.22 },
+      "FR": { "listPrice": 175.0, "sellPrice": 155.0, "vatRate": 0.2 },
+      "DE": { "listPrice": 172.0, "sellPrice": 152.0, "vatRate": 0.19 }
+    },
     "inStock": true,
-    "stockQuantity": 210,
-    "fulfillment": {
-      "type": "FBI",
-      "warehouseCode": "IWEXA-CENTRAL",
-      "prepTimeDays": 1,
-      "deliveryTimeDays": { "min": 2, "max": 4 }
-    },
-    "shippingPolicy": {
-      "country": "IT",
-      "cost": 4.5,
-      "freeShippingThreshold": 39,
-      "alwaysFree": false
-    },
-    "amazonUrl": "https://www.amazon.it/dp/B00EXAMPLE4"
-  },
-  {
-    "externalProductId": "IWX-PRD-30001",
-    "productSlug": "samsung-galaxy-s24-256gb",
-    "vendorSlug": "techworld",
-    "vendorCode": "3001",
-    "vendorName": "TechWorld",
-    "name": "Samsung Galaxy S24 — 256GB",
-    "description": "Smartphone Samsung Galaxy S24, 256GB, display AMOLED 6.2\".",
-    "bullets": ["Display AMOLED 6.2\"", "256GB di memoria", "Fotocamera 50MP"],
-    "images": ["https://cdn.iwexa.example/img/galaxy-s24-1.jpg"],
-    "brand": "Samsung",
-    "category": {
-      "googleTaxonomyId": 270,
-      "googleTaxonomyPath": "Electronics > Communications > Telephony > Mobile Phones",
-      "localizedPath": ["Elettronica", "Telefonia", "Cellulari"]
-    },
-    "listPrice": 1299.0,
-    "sellPrice": 1149.0,
-    "vatRate": 0.22,
-    "maxApplicableValue": 519.6,
-    "currency": "EUR",
-    "inStock": true,
-    "stockQuantity": 7,
+    "stockQuantity": 24,
     "fulfillment": {
       "type": "FBV",
-      "warehouseCode": "VENDOR-3001",
-      "prepTimeDays": 1,
-      "deliveryTimeDays": { "min": 2, "max": 4 }
+      "warehouseCode": "VENDOR-2044",
+      "prepTimeDays": 2,
+      "deliveryTimeDays": { "min": 3, "max": 6 }
     },
     "shippingPolicy": {
-      "country": "IT",
-      "cost": 9.9,
-      "freeShippingThreshold": 39,
-      "alwaysFree": false
+      "IT": { "cost": 4.5, "freeShippingThreshold": 39, "alwaysFree": false },
+      "FR": { "cost": 6.9, "freeShippingThreshold": 49, "alwaysFree": false },
+      "DE": { "cost": 5.9, "freeShippingThreshold": 45, "alwaysFree": false }
     },
-    "amazonUrl": "https://www.amazon.it/dp/B00EXAMPLE5"
+    "hazmat": {
+      "unRegulatoryId": "UN1266",
+      "properShippingName": "PERFUMERY PRODUCTS",
+      "transportClass": "3",
+      "packingGroup": "II",
+      "countryExceptions": ["IT_LimitedQuantity", "FR_LimitedQuantity", "DE_LimitedQuantity"]
+    },
+    "compliance": {
+      "manufacturer": "Gea Profumi S.R.L.",
+      "contactEmail": "art@liapascaniuc.com",
+      "ingredients": "Alcohol Denat., Parfum, Pinene, Acetyl Cedrene, Pogostemon Cablin Oil, Juniperus Virginiana Oil, Limonene, Terpineol, Beta-caryophyllene, Terpinolene, Linalool, Alpha-terpinene, Camphor, Geraniol",
+      "safetyWarning": "Liquido e vapori facilmente infiammabili. Tenere lontano da fonti di calore. Evitare il contatto con occhi e pelle irritata. Tenere fuori dalla portata dei bambini. Solo per uso esterno. Non ingerire."
+    },
+    "amazonUrl": "https://www.amazon.it/dp/B0H83PBXFF"
   },
   {
-    "externalProductId": "IWX-PRD-30002",
-    "productSlug": "anker-powerbank-20000mah",
+    "externalProductId": "0194644092009",
+    "productSlug": "anker-powercore-20000mah",
     "vendorSlug": "techworld",
     "vendorCode": "3001",
     "vendorName": "TechWorld",
-    "name": "Anker PowerCore 20000mAh",
-    "description": "Power bank da 20000mAh con ricarica rapida.",
-    "bullets": ["20000mAh", "Ricarica rapida 20W"],
-    "images": ["https://cdn.iwexa.example/img/anker-powercore-1.jpg"],
+    "updatedAt": "2026-07-10T11:00:00Z",
+    "i18n": {
+      "it": {
+        "name": "Anker PowerCore 20000mAh",
+        "description": "Power bank da 20000mAh con ricarica rapida.",
+        "bullets": ["20000mAh", "Ricarica rapida 20W"]
+      },
+      "en": {
+        "name": "Anker PowerCore 20000mAh",
+        "description": "20000mAh power bank with fast charging.",
+        "bullets": ["20000mAh", "20W fast charging"]
+      }
+    },
+    "images": ["https://cdn.paypoc.example/img/anker-powercore-1.jpg"],
     "brand": "Anker",
     "category": {
       "googleTaxonomyId": 500047,
       "googleTaxonomyPath": "Electronics > Electronics Accessories > Power > Batteries",
-      "localizedPath": ["Elettronica", "Accessori", "Batterie e Power Bank"]
+      "localizedPath": {
+        "it": ["Elettronica", "Accessori", "Batterie e Power Bank"],
+        "en": ["Electronics", "Electronics Accessories", "Power", "Batteries"]
+      }
     },
-    "listPrice": 49.9,
-    "sellPrice": 39.9,
-    "vatRate": 0.22,
-    "maxApplicableValue": 19.96,
-    "currency": "EUR",
+    "pricing": {
+      "IT": { "listPrice": 49.9, "sellPrice": 39.9, "vatRate": 0.22 },
+      "FR": { "listPrice": 52.9, "sellPrice": 42.9, "vatRate": 0.2 },
+      "DE": { "listPrice": 51.9, "sellPrice": 41.9, "vatRate": 0.19 }
+    },
     "inStock": false,
     "stockQuantity": 0,
     "fulfillment": {
@@ -214,10 +225,20 @@
       "deliveryTimeDays": { "min": 2, "max": 4 }
     },
     "shippingPolicy": {
-      "country": "IT",
-      "cost": 9.9,
-      "freeShippingThreshold": 39,
-      "alwaysFree": false
+      "IT": { "cost": 9.9, "freeShippingThreshold": 39, "alwaysFree": false },
+      "FR": { "cost": 11.9, "freeShippingThreshold": 49, "alwaysFree": false },
+      "DE": { "cost": 10.9, "freeShippingThreshold": 45, "alwaysFree": false }
+    },
+    "hazmat": {
+      "unRegulatoryId": "UN3481",
+      "properShippingName": "LITHIUM ION BATTERIES",
+      "transportClass": "9",
+      "packingGroup": "II",
+      "countryExceptions": ["IT_GroundOnly", "FR_GroundOnly", "DE_GroundOnly"]
+    },
+    "compliance": {
+      "manufacturer": "Anker Innovations Limited",
+      "contactEmail": "support@anker.com"
     },
     "amazonUrl": null
   }

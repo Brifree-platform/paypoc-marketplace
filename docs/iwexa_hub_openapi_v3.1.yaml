@@ -1,0 +1,494 @@
+openapi: 3.0.3
+info:
+  title: Iwexa Hub API — PayPoc Contract
+  version: "3.1"
+  description: |
+    Contratto fra Iwexa Hub (master + orchestratore) e il marketplace PayPoc.
+
+    Iwexa possiede catalogo, stock, prezzi, codici vendor, magazzino centrale,
+    routing degli ordini e integrazione corrieri.
+    PayPoc è in sola lettura sui dati prodotto, in scrittura sugli ordini.
+
+    ## Novità della 3.1 rispetto alla 3.0
+
+    Deriva dalla riconciliazione fra `PayPoc_Spec_IT.pdf` §6 e l'OpenAPI 3.0,
+    che descrivevano API divergenti (vedi docs/RICONCILIAZIONE-CONTRATTO.md).
+
+    1. **Prezzi e IVA per paese** — restano valori SINGOLI, ma vanno risolti
+       dall'Hub per il paese richiesto via `?country=`. Ogni paese ha la
+       propria aliquota IVA. Chiamate senza `country` usano IT.
+    2. **Identità prodotto: EAN** — `externalProductId` è l'EAN (8 o 13 cifre).
+       Lo slug resta per gli URL. L'ASIN Amazon non è la chiave.
+    3. **Iwexa invisibile al cliente** — nessun campo esposto a PayPoc può
+       contenere il nome Iwexa. Il magazzino FBI si chiama `PAYPOC-CENTRAL`,
+       il `trackingUrl` sta su dominio PayPoc.
+    4. **Autenticazione doppia** — Bearer token E firma HMAC, con finestra
+       anti-replay sul timestamp.
+    5. **Contenuto multi-lingua** — risolto dall'Hub via `?locale=`.
+    6. **Sync incrementale** — `?updated_since=` su `/products`.
+
+    Aggiunti inoltre due oggetti emersi dai payload reali e obbligatori per
+    legge in UE: `hazmat` (merci pericolose) e `compliance` (GPSR).
+
+servers:
+  - url: https://hub.iwexa.example/api/v1
+    description: Production (placeholder)
+  - url: https://hub-staging.iwexa.example/api/v1
+    description: Staging
+  - url: http://127.0.0.1:8800/api/v1
+    description: Mock locale (tools/mock-hub)
+
+security:
+  - BearerAuth: []
+    HmacAuth: []
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: |
+        API key condivisa. Identifica il chiamante.
+        Header: `Authorization: Bearer <IWEXA_API_KEY>`
+    HmacAuth:
+      type: apiKey
+      in: header
+      name: X-Iwexa-Signature
+      description: |
+        Firma HMAC-SHA256 di `body + timestamp` con il secret condiviso,
+        esadecimale minuscolo. Richiede anche `X-Iwexa-Timestamp` (Unix
+        seconds), accettato entro ±300 secondi da adesso: oltre quella
+        finestra la richiesta è rifiutata, così una richiesta catturata non
+        è riutilizzabile indefinitamente.
+
+        Sulle richieste senza body si firma la stringa vuota + timestamp.
+        Entrambi gli schemi devono essere soddisfatti: Bearer identifica,
+        HMAC garantisce l'integrità.
+
+  parameters:
+    Country:
+      name: country
+      in: query
+      description: ISO 3166-1 alpha-2. Determina prezzo, IVA e spedizione risolti. Default IT.
+      schema: { type: string, default: IT, example: IT }
+    Locale:
+      name: locale
+      in: query
+      description: Lingua del contenuto testuale. Default it.
+      schema: { type: string, default: it, example: it }
+
+  schemas:
+    Product:
+      type: object
+      required:
+        [externalProductId, productSlug, vendorCode, vendorName, name, listPrice,
+         sellPrice, vatRate, maxApplicableValue, currency, country, inStock,
+         fulfillment, shippingPolicy, category, updatedAt]
+      properties:
+        externalProductId:
+          type: string
+          description: EAN (8 o 13 cifre). Chiave d'identità del prodotto.
+          example: "8059777990122"
+        productSlug: { type: string, example: "lia-pascaniuc-aurora-blue-extrait-de-parfum" }
+        vendorSlug: { type: string, example: "gea-profumi" }
+        vendorCode:
+          type: string
+          description: Chiave di routing — raggruppa il carrello in pacchetti.
+          example: "2044"
+        vendorName: { type: string, example: "Gea Profumi" }
+        updatedAt:
+          type: string
+          format: date-time
+          description: Ultima modifica. Base per il sync incrementale.
+        name: { type: string, description: Risolto per il locale richiesto }
+        description: { type: string }
+        bullets: { type: array, items: { type: string } }
+        images: { type: array, items: { type: string, format: uri } }
+        brand: { type: string }
+        category:
+          type: object
+          required: [googleTaxonomyId, googleTaxonomyPath, localizedPath]
+          properties:
+            googleTaxonomyId: { type: integer, example: 479 }
+            googleTaxonomyPath:
+              type: string
+              example: "Health & Beauty > Personal Care > Cosmetics > Perfume & Cologne"
+            localizedPath:
+              type: array
+              items: { type: string }
+              description: Risolto per il locale richiesto. PayPoc lo usa così com'è, senza rimappature.
+              example: ["Salute e bellezza", "Cura della persona", "Cosmetici", "Profumi e colonie"]
+        listPrice:
+          type: number
+          format: float
+          description: Prezzo di listino del paese richiesto. Immutabile, base per wallet e bonus.
+          example: 170.00
+        sellPrice: { type: number, format: float, example: 149.00 }
+        vatRate:
+          type: number
+          format: float
+          description: Aliquota IVA del paese richiesto (0.22 IT, 0.20 FR, 0.19 DE).
+          example: 0.22
+        maxApplicableValue:
+          type: number
+          format: float
+          description: 40% di listPrice. Credito massimo applicabile.
+          example: 68.00
+        currency: { type: string, enum: [EUR] }
+        country:
+          type: string
+          description: Paese per cui i valori sono stati risolti.
+          example: IT
+        inStock: { type: boolean }
+        stockQuantity: { type: integer, nullable: true }
+        fulfillment:
+          type: object
+          required: [type, warehouseCode, prepTimeDays, deliveryTimeDays]
+          properties:
+            type: { type: string, enum: [FBI, FBV] }
+            warehouseCode:
+              type: string
+              description: |
+                Mai brandizzato Iwexa. Il magazzino centrale è `PAYPOC-CENTRAL`,
+                quelli vendor `VENDOR-{vendorCode}`.
+              example: "PAYPOC-CENTRAL"
+            prepTimeDays: { type: integer, minimum: 0 }
+            deliveryTimeDays:
+              type: object
+              properties:
+                min: { type: integer }
+                max: { type: integer }
+        shippingPolicy:
+          type: object
+          required: [country, cost, alwaysFree]
+          description: Risolta per il paese richiesto. Soglia valutata PER PACCHETTO.
+          properties:
+            country: { type: string, example: "IT" }
+            cost: { type: number, format: float }
+            freeShippingThreshold: { type: number, nullable: true }
+            alwaysFree:
+              type: boolean
+              description: Se true, freeShippingThreshold deve essere null e il costo è ignorato.
+        hazmat:
+          type: object
+          nullable: true
+          description: |
+            Presente sui prodotti soggetti a restrizioni di trasporto
+            (infiammabili, batterie al litio). Necessario per scegliere
+            corriere e modalità di spedizione.
+          properties:
+            unRegulatoryId: { type: string, example: "UN1266" }
+            properShippingName: { type: string, example: "PERFUMERY PRODUCTS" }
+            transportClass: { type: string, example: "3" }
+            packingGroup: { type: string, example: "II" }
+            countryExceptions:
+              type: array
+              items: { type: string }
+              example: ["IT_LimitedQuantity"]
+        compliance:
+          type: object
+          nullable: true
+          description: |
+            Dati obbligatori per legge in UE (GPSR) su cosmetici, alimentari
+            e prodotti chimici. Vanno mostrati sulla scheda prodotto.
+          properties:
+            manufacturer: { type: string }
+            contactEmail: { type: string, format: email }
+            ingredients: { type: string }
+            safetyWarning: { type: string }
+        amazonUrl: { type: string, format: uri, nullable: true }
+
+    Shipment:
+      type: object
+      required: [shipmentId, vendorCode, type, status, estimatedDelivery, items]
+      properties:
+        shipmentId: { type: string }
+        vendorCode: { type: string }
+        type: { type: string, enum: [FBI, FBV] }
+        status: { type: string, enum: [preparing, shipped, in_transit, delivered] }
+        trackingNumber: { type: string }
+        trackingUrl:
+          type: string
+          format: uri
+          description: Sempre su dominio PayPoc. Il corriere e Iwexa non devono comparire.
+          example: "https://tracking.paypoc.example/PPC1234567890"
+        carrier: { type: string }
+        estimatedDelivery: { type: string, format: date }
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              externalProductId: { type: string }
+              quantity: { type: integer }
+
+    Order:
+      type: object
+      properties:
+        orderId: { type: string }
+        status: { type: string, enum: [pending, confirmed, shipped, delivered, cancelled] }
+        country: { type: string }
+        shipments: { type: array, items: { $ref: '#/components/schemas/Shipment' } }
+        totals:
+          type: object
+          properties:
+            subtotal: { type: number }
+            shipping: { type: number }
+            walletApplied: { type: number }
+            total: { type: number }
+
+    OrderCreate:
+      type: object
+      required: [userId, shippingAddress, items, totalAgreed, paymentMethod, paymentToken]
+      properties:
+        userId: { type: string }
+        shippingAddress:
+          type: object
+          properties:
+            name: { type: string }
+            street: { type: string }
+            city: { type: string }
+            zip: { type: string }
+            country: { type: string, description: Determina prezzi, IVA e spedizione dell'ordine }
+            phone: { type: string }
+        billingAddress: { type: object, nullable: true }
+        items:
+          type: array
+          items:
+            type: object
+            required: [externalProductId, vendorCode, quantity, listPriceSnapshot, sellPriceSnapshot]
+            properties:
+              externalProductId: { type: string, description: EAN }
+              vendorCode: { type: string }
+              quantity: { type: integer, minimum: 1 }
+              listPriceSnapshot: { type: number }
+              sellPriceSnapshot: { type: number }
+        walletApplied: { type: number, minimum: 0 }
+        totalAgreed: { type: number }
+        paymentMethod: { type: string, enum: [card, paypal, klarna, applepay, googlepay] }
+        paymentToken: { type: string }
+
+    StockResponse:
+      type: object
+      properties:
+        externalProductId: { type: string }
+        inStock: { type: boolean }
+        quantity: { type: integer, nullable: true }
+
+    Vendor:
+      type: object
+      properties:
+        vendorCode: { type: string }
+        vendorSlug: { type: string }
+        vendorName: { type: string }
+        logoUrl: { type: string, format: uri }
+
+    ShippingQuote:
+      type: object
+      properties:
+        country: { type: string }
+        packages:
+          type: array
+          items:
+            type: object
+            properties:
+              vendorCode: { type: string }
+              cost: { type: number }
+              freeShippingThreshold: { type: number, nullable: true }
+              alwaysFree: { type: boolean }
+              estimatedDelivery:
+                type: object
+                properties:
+                  min: { type: integer }
+                  max: { type: integer }
+
+    Error:
+      type: object
+      properties:
+        status: { type: string, example: error }
+        error: { type: string }
+
+paths:
+  /products:
+    get:
+      summary: Catalogo, risolto per paese e lingua
+      parameters:
+        - $ref: '#/components/parameters/Country'
+        - $ref: '#/components/parameters/Locale'
+        - name: updated_since
+          in: query
+          description: |
+            ISO8601. Restituisce solo i prodotti modificati dopo questa data.
+            Senza, ogni sincronizzazione rilegge l'intero catalogo.
+          schema: { type: string, format: date-time }
+        - { name: vendorCode, in: query, schema: { type: string } }
+        - { name: googleTaxonomyId, in: query, schema: { type: integer } }
+        - { name: page, in: query, schema: { type: integer, default: 1 } }
+        - { name: pageSize, in: query, schema: { type: integer, default: 50 } }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/Product' } }
+                  total: { type: integer }
+                  country: { type: string }
+                  locale: { type: string }
+        '401': { description: Autenticazione mancante o non valida, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+        '422': { description: Paese non gestito o updated_since non valido }
+
+  /products/{idOrSlug}:
+    get:
+      summary: Dettaglio prodotto per EAN o slug
+      parameters:
+        - name: idOrSlug
+          in: path
+          required: true
+          description: EAN (identità) oppure productSlug (URL). Entrambi devono funzionare.
+          schema: { type: string }
+        - $ref: '#/components/parameters/Country'
+        - $ref: '#/components/parameters/Locale'
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Product' } } } }
+        '404': { description: Not found }
+        '422': { description: Paese non gestito per questo prodotto }
+
+  /stock/{externalProductId}:
+    get:
+      summary: Disponibilità real-time
+      parameters:
+        - { name: externalProductId, in: path, required: true, description: EAN, schema: { type: string } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/StockResponse' } } } }
+        '404': { description: Not found }
+
+  /vendors:
+    get:
+      summary: Anagrafica vendor
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/Vendor' } }
+
+  /shipping-quote:
+    get:
+      summary: Costo di spedizione per pacchetto
+      description: |
+        La soglia di spedizione gratuita si valuta PER VENDOR / PER PACCHETTO,
+        mai sul totale ordine. Gli articoli con alwaysFree=true non concorrono
+        al conteggio della soglia degli altri pacchetti.
+      parameters:
+        - { name: country, in: query, required: true, schema: { type: string } }
+        - name: cart
+          in: query
+          required: true
+          description: 'Array JSON [{externalProductId, quantity}]'
+          schema: { type: string }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/ShippingQuote' } } } }
+        '422': { description: Parametri mancanti, prodotto sconosciuto o paese non gestito }
+
+  /taxonomy:
+    get:
+      summary: Google Product Taxonomy localizzata
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+      responses:
+        '200': { description: OK }
+
+  /orders:
+    post:
+      summary: Crea ordine — l'Hub splitta per vendor e instrada FBI/FBV
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/OrderCreate' }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/Order' } } } }
+        '409': { description: Stock conflict }
+        '422': { description: Errore di validazione }
+
+  /orders/{id}:
+    get:
+      summary: Stato ordine consolidato con spedizioni
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Order' } } } }
+        '404': { description: Not found }
+
+  /orders/{id}/cancel:
+    post:
+      summary: Annulla ordine — l'Hub ripristina lo stock
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { description: Cancelled }
+        '404': { description: Not found }
+        '409': { description: Ordine già consegnato }
+
+  /orders/{id}/return:
+    post:
+      summary: Apre un reso
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [items]
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      externalProductId: { type: string }
+                      quantity: { type: integer }
+                reason: { type: string }
+      responses:
+        '200': { description: Reso aperto }
+        '404': { description: Not found }
+        '422': { description: items obbligatorio }
+
+# Webhook Hub -> PayPoc, firmati con lo stesso schema HMAC
+webhooks:
+  productUpdated:
+    post:
+      summary: Prodotto aggiornato (prezzo, stock, disponibilità, contenuto)
+      description: Il payload è uno schema Product già risolto per paese e lingua.
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Product' }
+      responses: { '200': { description: ack } }
+
+  stockChanged:
+    post:
+      summary: Variazione di stock
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                externalProductId: { type: string, description: EAN }
+                inStock: { type: boolean }
+                quantity: { type: integer, nullable: true }
+      responses: { '200': { description: ack } }
+
+  orderStatusChanged:
+    post:
+      summary: Aggiornamento stato ordine o spedizione
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Order' }
+      responses: { '200': { description: ack } }
