@@ -1,0 +1,7 @@
+[
+  { "vendorCode": "1019", "vendorSlug": "barilla",  "vendorName": "Barilla",   "logoUrl": "https://cdn.iwexa.example/logo/barilla.png" },
+  { "vendorCode": "1042", "vendorSlug": "dececco",  "vendorName": "De Cecco",  "logoUrl": "https://cdn.iwexa.example/logo/dececco.png" },
+  { "vendorCode": "1077", "vendorSlug": "mutti",    "vendorName": "Mutti",     "logoUrl": "https://cdn.iwexa.example/logo/mutti.png" },
+  { "vendorCode": "2011", "vendorSlug": "loreal",   "vendorName": "L'Oréal",   "logoUrl": "https://cdn.iwexa.example/logo/loreal.png" },
+  { "vendorCode": "3001", "vendorSlug": "techworld","vendorName": "TechWorld", "logoUrl": "https://cdn.iwexa.example/logo/techworld.png" }
+]

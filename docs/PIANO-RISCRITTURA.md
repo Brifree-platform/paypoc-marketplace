@@ -152,6 +152,19 @@ risponde con `shipments` splittati per vendor e lo stato si riflette in Bagisto.
 
 ### Fase 4 — Webhook in ingresso
 
+> **Due difetti già emersi**, trovati dal mock alla prima esecuzione (2026-07-20):
+>
+> 1. **`delivery_id` non viene mai valorizzato.** `WebhookController` legge
+>    `X-IWEXA-DELIVERY-ID` ma non lo passa a `WebhookProcessorService::processWebhook()`,
+>    che riceve solo `($data, $signature, $timestamp)`. Il campo resta vuoto e, avendo
+>    un indice univoco, **il secondo webhook ricevuto fallisce sempre** con
+>    `Duplicate entry '' for key ..._delivery_id_unique`. Il dedup per
+>    `event_id`+`delivery_id` descritto nella documentazione non funziona.
+> 2. **I tipi di evento del contratto non sono riconosciuti**: `productUpdated`,
+>    `stockChanged`, `orderStatusChanged` finiscono tutti in `event_type = unknown`.
+>
+> Entrambi erano invisibili leggendo il codice: sono emersi al primo invio reale.
+
 `productUpdated`, `stockChanged`, `orderStatusChanged` — i tre della specifica.
 
 È la parte in cui il codice attuale è più vicino al riutilizzabile: `WebhookProcessorService`,

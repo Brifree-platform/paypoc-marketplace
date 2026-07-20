@@ -1,0 +1,31 @@
+{
+  "locale": "it-IT",
+  "source": "https://www.google.com/basepages/producttype/taxonomy-with-ids.it-IT.txt",
+  "nodes": [
+    {
+      "googleTaxonomyId": 2912,
+      "googleTaxonomyPath": "Food, Beverages & Tobacco > Food Items > Pasta & Noodles > Pasta",
+      "localizedPath": ["Alimentari", "Pasta e Riso", "Pasta"]
+    },
+    {
+      "googleTaxonomyId": 2660,
+      "googleTaxonomyPath": "Food, Beverages & Tobacco > Food Items > Condiments & Sauces > Tomato Sauce",
+      "localizedPath": ["Alimentari", "Sughi e Conserve", "Passate"]
+    },
+    {
+      "googleTaxonomyId": 5070,
+      "googleTaxonomyPath": "Health & Beauty > Personal Care > Hair Care > Hair Shampoos",
+      "localizedPath": ["Bellezza", "Cura della Persona", "Capelli", "Shampoo"]
+    },
+    {
+      "googleTaxonomyId": 270,
+      "googleTaxonomyPath": "Electronics > Communications > Telephony > Mobile Phones",
+      "localizedPath": ["Elettronica", "Telefonia", "Cellulari"]
+    },
+    {
+      "googleTaxonomyId": 500047,
+      "googleTaxonomyPath": "Electronics > Electronics Accessories > Power > Batteries",
+      "localizedPath": ["Elettronica", "Accessori", "Batterie e Power Bank"]
+    }
+  ]
+}
