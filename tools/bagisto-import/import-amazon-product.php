@@ -138,7 +138,7 @@ $saved = \Webkul\Product\Models\Product::find($created->id);
 echo "Prodotto creato\n";
 echo str_repeat('─', 72) . "\n";
 printf("  %-22s %s\n", 'id', $saved->id);
-printf("  %-22s %s\n", 'sku (= ASIN)', $saved->sku);
+printf("  %-22s %s\n", 'sku (= EAN)', $saved->sku);
 printf("  %-22s %s\n", 'nome', mb_substr((string) $saved->name, 0, 46) . '…');
 printf("  %-22s %s\n", 'url_key', $saved->url_key);
 printf("  %-22s %s %s\n", 'prezzo', $saved->price, core()->getBaseCurrencyCode());
