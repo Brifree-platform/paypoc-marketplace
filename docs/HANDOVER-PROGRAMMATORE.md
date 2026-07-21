@@ -255,6 +255,10 @@ costruire**. Se il preventivo copre anche quelle, vanno stimate a parte.
 4. **Chi ospita l'Hub** e con quali ambienti (staging + produzione).
 5. **Rotazione dei segreti**: come si cambiano `IWEXA_API_KEY` e
    `IWEXA_HMAC_SECRET` senza interrompere il servizio.
+6. **Immagini prodotto**: chi le ingerisce e chi le ospita. Il payload Amazon
+   espone URL su `m.media-amazon.com`, che non possono arrivare al cliente
+   (decisione 3): l'Hub deve archiviarle su storage PayPoc (S3) ed esporre URL
+   propri. Dettagli e schema proposto in `PIANO-IMMAGINI.md`.
 
 ---
 
