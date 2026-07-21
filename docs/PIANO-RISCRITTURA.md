@@ -1,8 +1,9 @@
 # Piano di riscrittura — IwexaConnector
 
-> **Data:** 2026-07-20
-> **Stato:** proposta, da approvare
-> **Contratto di riferimento:** `iwexa_hub_openapi.yaml` + `hub-field-contract.md` v3.0 (2026-04-29, Active)
+> **Data:** 2026-07-20 (allineato a v3.1 il 2026-07-21)
+> **Stato:** Fase 0 completata; le 6 decisioni che bloccavano la Fase 1 sono chiuse
+> **Contratto di riferimento:** `iwexa_hub_openapi_v3.1.yaml` + `hub-field-contract.md`
+> — v3.1 recepisce le 6 decisioni di [RICONCILIAZIONE-CONTRATTO.md](RICONCILIAZIONE-CONTRATTO.md)
 
 ---
 
@@ -111,24 +112,25 @@ fidati", ma "il tuo Hub deve superare questa stessa suite". Quando l'Hub reale a
 - Firma HMAC sulle risposte webhook, per esercitare anche quel percorso
 - Dataset di esempio coerente con lo schema `Product` (incluso FBI/FBV e `alwaysFree`)
 
-**Verifica:** i payload del mock validano contro lo schema OpenAPI.
+**Verifica:** i payload del mock validano contro lo schema OpenAPI. **Fatto** — il mock
+supera 63 controlli di conformità (`tools/mock-hub/bin/conformance.php`).
 
-> ⚠️ **Bloccante prima della fase 1.** La lettura completa dell'handover (2026-07-20)
-> ha rivelato che `PayPoc_Spec_IT.pdf` §6 descrive un'API **diversa** dall'OpenAPI v3.0:
-> prezzi e IVA per paese, identità per GTIN, sync incrementale, contenuto multi-lingua,
-> Bearer + HMAC. Le due fonti concordano sulla direzione (pull) ma non sui dettagli, e
-> il modello dati della fase 1 dipende da quale prevale.
-> Vedi **[RICONCILIAZIONE-CONTRATTO.md](RICONCILIAZIONE-CONTRATTO.md)** — 6 decisioni aperte.
+> ✅ **Gate risolto.** La lettura completa dell'handover (2026-07-20) aveva rivelato che
+> `PayPoc_Spec_IT.pdf` §6 descriveva un'API **diversa** dall'OpenAPI v3.0 (prezzi e IVA
+> per paese, identità per EAN, sync incrementale, contenuto multi-lingua, Bearer + HMAC).
+> Le 6 divergenze sono state **decise e recepite nel contratto v3.1** e nel mock — vedi
+> **[RICONCILIAZIONE-CONTRATTO.md](RICONCILIAZIONE-CONTRATTO.md)**. La Fase 1 non è più bloccata.
 
 ### Fase 1 — Modello dati allineato
 
 Migration e model che rispecchiano lo schema `Product` del contratto.
 
-- `externalProductId` come chiave d'identità (oggi: `sku`)
-- `listPrice`, `sellPrice`, `vatRate`, `maxApplicableValue`
-- `googleTaxonomyId`, `googleTaxonomyPath`, `localizedPath`
-- `fulfillment` (`type` FBI/FBV, `warehouseCode`, `prepTimeDays`, `deliveryTimeDays`)
+- `externalProductId` = **EAN** come chiave d'identità (oggi: `sku`) — decisione 2
+- `listPrice`, `sellPrice`, `vatRate`, `maxApplicableValue` (risolti per `?country=` — decisione 1)
+- `googleTaxonomyId`, `googleTaxonomyPath`, `localizedPath` (risolto per `?locale=` — decisione 5)
+- `fulfillment` (`type` FBI/FBV, `warehouseCode` `PAYPOC-CENTRAL`, `prepTimeDays`, `deliveryTimeDays`)
 - `shippingPolicy` (`country`, `cost`, `freeShippingThreshold`, `alwaysFree`)
+- `hazmat` e `compliance` (nullable) — aggiunti in v3.1 dai payload reali, vedi handover §4
 
 **Vincolo:** le regole di §"Validation Rules" del field contract vanno applicate come validazione
 reale (`listPrice ≥ sellPrice`, `maxApplicableValue ≤ sellPrice`, `alwaysFree=true → threshold null`).
@@ -194,26 +196,25 @@ caratterizza PayPoc.
 
 ---
 
-## 5. Decisione tecnica aperta — la firma
+## 5. Decisione tecnica sulla firma — risolta (decisione 4)
 
-| | Specifica | Implementazione attuale |
-|---|---|---|
-| Contenuto firmato | solo body | body + timestamp |
-| Finestra anti-replay | assente | ±300s configurabile |
+Era aperta la scelta fra firmare solo il body (specifica originale) o `body + timestamp`
+con finestra anti-replay (implementazione). Senza timestamp una richiesta catturata resta
+riutilizzabile **per sempre**.
 
-Senza timestamp, una richiesta catturata resta riutilizzabile **per sempre**.
-
-**Raccomandazione:** tenere il timestamp e **aggiornare la specifica**. Dato che l'Hub non è
-ancora stato scritto, questo è il momento di correggere il contratto, non di adeguarsi a una sua
-debolezza. Il nome header `X-Iwexa-Signature` coincide già (gli header HTTP sono case-insensitive).
+**Deciso:** autenticazione doppia **Bearer + HMAC su `body + timestamp` + finestra ±300s**,
+recepita nel contratto v3.1 e nel mock. Il connettore va quindi affiancato dalla verifica del
+Bearer, non solo HMAC (handover §3.4). Il middleware `VerifyIwexaSignature` esistente firma già
+`body + timestamp`: header `X-Iwexa-Signature` / `X-Iwexa-Timestamp`.
 
 ---
 
 ## 6. Decisioni che spettano al committente
 
-1. **Il contratto v3.0 è confermato?** Tutto il piano ci poggia sopra.
-2. **Chi costruisce l'Hub Iwexa, e quando?** Senza Hub reale il connettore non va in produzione,
-   per quanto ben scritto. Il mock consente di procedere, non di rilasciare.
+1. ~~Il contratto è confermato?~~ **Sì — v3.1**, con le 6 decisioni recepite. Il piano ci poggia sopra.
+2. **Chi costruisce l'Hub Iwexa E il connettore PayPoc, e quando?** Il committente ha indicato che
+   la costruzione (connettore + ingest immagini) è affidata al programmatore dell'Hub. Il mock e
+   questo piano sono il materiale di consegna; il collaudo è la suite di conformità.
 3. **Quanta admin UI di mapping serve** una volta che la tassonomia arriva già normalizzata?
 4. **Il repo GitHub deve restare pubblico?** Oggi `Brifree-platform/paypoc-marketplace` è
    pubblico. Nessuna credenziale è mai stata committata (verificato su tutta la history), ma
