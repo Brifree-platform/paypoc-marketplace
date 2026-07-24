@@ -43,7 +43,8 @@ Ripartizione dei ruoli documentali:
 3. **`01-glossary.md`** — la terminologia ufficiale (leggere prima di ogni documento tematico).
 4. **`02-decision-process.md`** — come si prendono e si preservano le decisioni.
 5. **`03-product-model-strategy.md`** — i principi del ciclo di vita del prodotto (Product Lifecycle).
-6. **`docs/adr/`** — gli ADR, man mano che vengono emessi (oggi non ancora presenti).
+6. **`04-enterprise-platform-decomposition.md`** — la struttura enterprise (macro-Platform): confini, ownership e dipendenze.
+7. **`docs/adr/`** — gli ADR, man mano che vengono emessi (oggi non ancora presenti).
 
 ## Elenco dei documenti e stato di approvazione
 
@@ -54,6 +55,7 @@ Ripartizione dei ruoli documentali:
 | [01-glossary.md](01-glossary.md) | Fonte unica della terminologia ufficiale | In approvazione | 1.0.0-draft |
 | [02-decision-process.md](02-decision-process.md) | Processo decisionale e preservazione della conoscenza | Approved | 1.0.0 |
 | [03-product-model-strategy.md](03-product-model-strategy.md) | Product Model Strategy (principi del ciclo di vita del prodotto) | Approved | 1.0.1 |
+| [04-enterprise-platform-decomposition.md](04-enterprise-platform-decomposition.md) | Enterprise Platform Decomposition (struttura enterprise: macro-Platform, confini, ownership) | Approved | 1.0.0 |
 
 > Gli ADR risiederanno in `docs/adr/` (`ADR-NNN-<slug>.md`). Alla data attuale **non
 > esiste ancora alcun ADR**; le decisioni architetturali già formalizzate come strategia
@@ -99,4 +101,5 @@ Ripartizione dei ruoli documentali:
 | Data | Versione | Modifica | Stato |
 |---|---|---|---|
 | 2026-07-23 | 1.0.0-draft | Prima stesura del README della Foundation (STEP 02 — Foundation Consolidation). | In approvazione |
+| 2026-07-24 | 1.0.0-draft | Aggiunto `04-enterprise-platform-decomposition.md` (Approved 1.0.0) all'elenco e all'ordine di lettura (STEP 06 approvazione); chiusa la fase di Foundation Architecture. | In approvazione |
 </content>
