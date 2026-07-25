@@ -3,14 +3,14 @@
 > **Sistema:** IWEXA + PayPoc
 > **Documento:** `docs/foundation/04-enterprise-platform-decomposition.md`
 > **Stato:** Approved
-> **Versione:** 1.0.0
+> **Versione:** 1.1.0
 > **Data:** 2026-07-24
 > **Data di approvazione:** 2026-07-24
 > **Autore:** Architecture Foundation
 > **Approvatore finale:** Cristiano Plattner
 > **Responsabile della proposta tecnica:** Principal Software Architect
-> **Prerequisiti:** `00-project-rules.md` — Approved 1.0.0 · `01-glossary.md` — In approvazione ·
-> `02-decision-process.md` — Approved 1.0.0 · `03-product-model-strategy.md` — Approved 1.0.1
+> **Prerequisiti:** `00-project-rules.md` — Approved 2.0.0 · `01-glossary.md` — In approvazione ·
+> `02-decision-process.md` — Approved 1.0.1 · `03-product-model-strategy.md` — Approved 1.0.1
 > **Ambito:** struttura enterprise (macro-**Platform**) di IWEXA + PayPoc — responsabilità,
 > confini, ownership, dipendenze, Business Capability.
 > **Nota:** descrive **struttura**, non implementazione, API, database, deployment o tecnologia.
@@ -155,15 +155,16 @@ Per ogni capability: obiettivo · valore per il business · Platform responsabil
 - **Executor:** IWEXA (+ corrieri esterni).
 - **Dipendenze:** Vendor & Supplier; riceve l'Order da Commerce.
 
-### 4.7 Vendor & Supplier Platform · 🟡 Parziale
-- **Scopo:** possedere identità e rapporto con **Vendor**/**Fornitore**.
-- **Responsabilità:** anagrafica, onboarding, condizioni commerciali/operative, **Vendor Store**, **Vendor Warehouse**.
+### 4.7 Maestro Platform *(ex Vendor & Supplier)* · 🟡 Parziale
+- **Scopo:** possedere il **Maestro** come **soggetto di dominio relazionale** — identità, storia, relazione e libertà — non come mera anagrafica fornitore [DECISION: ADR-004]. Un Maestro **può anche** essere, giuridicamente, un **Vendor/Fornitore**.
+- **Responsabilità:** identità e storia del Maestro, onboarding, condizioni commerciali/operative, **Vendor Store**, **Vendor Warehouse**.
 - **Non-responsabilità:** gestire direttamente catalogo, prezzi o stock.
-- **Dati posseduti:** Vendor/Fornitore master.
+- **Dati posseduti:** Maestro (anagrafica tecnica: **Vendor**/**Fornitore** master).
 - **System of Record:** IWEXA (partner).
 - **Policy Owner:** IWEXA (onboarding, condizioni).
 - **Executor:** IWEXA.
-- **Dipendenze:** alimenta Core Product, Fulfillment & Logistics, Commerce.
+- **Dipendenze:** alimenta Core Product, Fulfillment & Logistics, Commerce; è uno dei due capi del dominio **Relazione** (§4.9).
+- *(Naming: a livello di dominio il soggetto è il **Maestro**; il naming tecnico/fisico resta `Vendor`/`vendor*` per Contract First — ADR-004 §3.)*
 
 ### 4.8 Commerce Platform (PayPoc) · 🔵 Progettato / TO-BE
 - **Scopo:** gestire la transazione e l'esperienza commerciale sul Sales Channel **PayPoc**.
@@ -175,6 +176,34 @@ Per ogni capability: obiettivo · valore per il business · Platform responsabil
 - **Executor:** PayPoc.
 - **Dipendenze:** Publication (canale PayPoc), Pricing & Commercial Rules, Fulfillment & Logistics (stato/tracking).
 - *(Nota di maturità: Order/Payment sono definiti a contratto; il **Customer Value** — Wallet/Credito/Cashback/Loyalty — è ❌ inesistente oggi.)*
+
+> **Nuovi domini fondativi (ADR-005).** I tre elementi seguenti — **Relazione**, **Famiglie**,
+> **Fiducia** — sono il cuore della Ragione di Esistere, prima assenti dalla decomposizione.
+> Sono qui **introdotti come domini fondativi, non (ancora) Platform:** la loro eventuale
+> promozione a Platform sarà oggetto di una **futura decisione architetturale (ADR)** e la
+> nomenclatura odierna non la anticipa. Confini di dettaglio, ownership e maturità saranno
+> definiti in un passo successivo [DECISION: ADR-005].
+
+### 4.9 Relazione · Dominio fondativo · 🔵 Nuovo / TO-BE
+- **Scopo:** modellare la **relazione diretta Maestro↔Famiglia** come dominio di prim'ordine — "lo stesso legame, due capi". Cuore operativo della Ragione di Esistere [DECISION: ADR-005].
+- **Responsabilità (target):** legame diretto, contatto, continuità e storia della relazione.
+- **Non-responsabilità:** non è l'**Ordine commerciale** (Commerce) né l'anagrafica (Maestro/Famiglie).
+- **System of Record:** PayPoc *(preliminare — confini da dettagliare, ADR-005)*.
+- **Dipendenze:** unisce la **Maestro Platform** (§4.7) e il **dominio Famiglie** (§4.10).
+
+### 4.10 Famiglie · Dominio fondativo · 🔵 Nuovo / TO-BE
+- **Scopo:** modellare la **Famiglia/nucleo** come **soggetto relazionale ed economico**, non come generico "Customer" [DECISION: ADR-005].
+- **Responsabilità (target):** identità della Famiglia, libertà e consapevolezza di scelta, relazione con i Maestri.
+- **Non-responsabilità:** **non** sostituisce l'entità tecnica **Customer** (Commerce), che resta il naming di implementazione.
+- **System of Record:** PayPoc *(preliminare — confini da dettagliare, ADR-005)*.
+- **Dipendenze:** uno dei due capi del dominio **Relazione** (§4.9).
+
+### 4.11 Fiducia · Dominio fondativo · 🔵 Nuovo / TO-BE
+- **Scopo:** trattare **fiducia, verifica, trasparenza e reputazione** come dominio esplicito, non come dopo-pensiero [DECISION: ADR-005].
+- **Responsabilità (target):** verifica del Maestro e dei prodotti, trasparenza informativa, reputazione, segnali di fiducia.
+- **Non-responsabilità:** non è la **Compliance** legale (§4.4), che resta distinta.
+- **System of Record:** da definire *(preliminare — confini da dettagliare, ADR-005)*.
+- **Dipendenze:** attraversa Maestro, Relazione, Famiglie, Publication.
 
 ## 5 · Cross-Cutting Capabilities
 
@@ -210,7 +239,10 @@ Per ogni capability: obiettivo · valore per il business · Platform responsabil
 | Conformità (GPSR, hazmat) | Compliance (IWEXA) | **Esterno**: legge/regolatore per Paese | IWEXA |
 | Stato di pubblicazione / accettazione | Publication (IWEXA) | **Distribuito**: Sales Channel + Compliance (per Sales Channel × Paese) | IWEXA |
 | Stock / disponibilità | Fulfillment & Logistics (IWEXA) — scrive **solo** l'Hub | IWEXA (routing) + condizioni Vendor | IWEXA (+ corrieri) |
-| Vendor / Fornitore | Vendor & Supplier (IWEXA) | IWEXA | IWEXA |
+| Maestro (anagrafica: Vendor / Fornitore) | Maestro Platform (IWEXA) | IWEXA | IWEXA |
+| Relazione Maestro↔Famiglia | Relazione (PayPoc) — *preliminare* | PayPoc | PayPoc |
+| Famiglia (soggetto) | Famiglie (PayPoc) — *preliminare* | PayPoc | PayPoc |
+| Fiducia / verifica / reputazione | Fiducia (da definire) — *preliminare* | da definire | da definire |
 | Ordine commerciale / Customer Value | Commerce (PayPoc) | PayPoc | PayPoc |
 | Contratto / auth / eventi | Integration & Trust | `00` + contratto | ai confini di sistema |
 | — (AI) | Nessuno | — | AI Capability Layer |
@@ -288,4 +320,5 @@ Il documento è **Approved** come struttura enterprise di riferimento.
 | 2026-07-24 | 1.0.0-draft | Prima stesura (STEP 06): scomposizione enterprise in macro-Platform — purpose, principi, Business Capability, decomposizione, cross-cutting, ownership matrix, dependency diagram, principi architetturali, relazione con i documenti di dominio. Basata su Foundation `00/02`, `03` Product Model Strategy, Platform Decomposition (STEP 05) e Glossario. | In approvazione |
 | 2026-07-24 | 1.0.0-draft | Revisione finale editoriale (STEP 06A): distinzione **Business Capability ≠ Platform**; **legenda di maturità** e marker per Platform; **Product Acceptance** come **Open Architectural Question** (da ADR); principio **AI non modifica i System of Record**; regola **nessun documento di dominio ridefinisce i confini**. **Nessuna modifica ai confini né decisioni architetturali.** | In approvazione |
 | 2026-07-24 | 1.0.0 | **Approvata la struttura architetturale** dal committente (STEP 06): documento promosso a **Approved 1.0.0**. Macro-architettura della piattaforma **congelata**; future modifiche ai confini via governance della Foundation e ADR quando applicabile. | Approved |
+| 2026-07-25 | 1.1.0 | Riallineamento alla Ragione di Esistere (ADR-004, ADR-005): **4.7 Vendor & Supplier → Maestro Platform** (soggetto relazionale; naming fisico `vendor*` invariato, ADR-004 §3); **introdotti** i **domini fondativi** **Relazione** (§4.9), **Famiglie** (§4.10), **Fiducia** (§4.11) — **non ancora Platform** (promozione = futura decisione) — e relative righe nella Ownership Matrix; confini di dettaglio rinviati (ADR-005). Nessuna modifica ai confini delle Platform preesistenti oltre la riqualificazione di 4.7. | Approved |
 </content>

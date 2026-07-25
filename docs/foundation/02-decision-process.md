@@ -3,12 +3,13 @@
 > **Sistema:** IWEXA + PayPoc
 > **Documento:** `docs/foundation/02-decision-process.md`
 > **Stato:** Approved
-> **Versione:** 1.0.0
+> **Versione:** 1.0.1
 > **Data:** 2026-07-23
 > **Data di approvazione:** 2026-07-23
 > **Approvatore finale:** Cristiano Plattner
 > **Responsabile della proposta tecnica:** Principal Software Architect
-> **Prerequisito:** `docs/foundation/00-project-rules.md` — Approved 1.0.0
+> **Prerequisito:** `docs/foundation/00-project-rules.md` — Approved 2.0.0
+> **Norma superiore:** **Ragione di Esistere** (PAYPOC OS — Livello -1) → `00` → ADR → Foundation [DECISION: ADR-001].
 > **Ambito:** processo decisionale del progetto e memoria tecnica
 > **Nota:** il documento non autorizza modifiche al codice.
 
@@ -61,4 +62,5 @@ L'obiettivo del progetto è **evitare qualsiasi perdita di conoscenza tecnica**.
 | Data | Versione | Modifica | Stato |
 |---|---|---|---|
 | 2026-07-23 | 1.0.0 | Prima versione approvata del processo decisionale e di preservazione della conoscenza. | Approved |
+| 2026-07-25 | 1.0.1 | Micro-sync alla nuova gerarchia (ADR-001): prerequisito aggiornato a `00` — Approved 2.0.0; aggiunto riferimento alla Ragione di Esistere come norma superiore. Nessuna modifica al processo. | Approved |
 </content>

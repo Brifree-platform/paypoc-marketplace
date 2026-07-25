@@ -4,20 +4,25 @@
 > **Repository tecnico:** `paypoc-marketplace` (nome del repository reale, non del sistema).
 > **Documento:** `docs/foundation/00-project-rules.md`
 > **Stato:** Approved (STEP 01B)
-> **Versione:** 1.0.0
+> **Versione:** 2.0.0
 > **Data:** 2026-07-23
 > **Approvazione:** approvato il **2026-07-23** da **Cristiano Plattner** (Committente e
 > responsabile del progetto), con le modifiche obbligatorie recepite in questa versione.
 > **Ambito:** governa la **documentazione**, il **contratto** e il **processo** del
 > sistema IWEXA + PayPoc. **Non** autorizza alcuna modifica al codice.
 > **Prerequisito:** STEP 01A — Repository Discovery — concluso e approvato.
+> **Norma superiore:** la **Ragione di Esistere** (PAYPOC OS — Livello -1) è sovraordinata a
+> questa Costituzione tecnica [DECISION: ADR-001].
 
 ---
 
 ## Preambolo
 
-Questo documento è la **norma di grado più alto** del progetto: ogni altro documento,
-decisione e convenzione le è subordinato. Esiste per una ragione precisa, emersa dal
+Questo documento è la **Costituzione tecnica** del progetto: la norma di grado più alto
+**fra i documenti tecnici**, cui ogni altro documento tecnico, decisione e convenzione è
+subordinato. **Al di sopra di essa** sta un'unica norma superiore — la **Ragione di Esistere**
+(PAYPOC OS — Livello -1) — che ne orienta e vincola il contenuto [DECISION: ADR-001]. Esiste
+per una ragione precisa, emersa dal
 Repository Discovery (STEP 01A):
 
 - del progetto era stato scritto **codice prima che il contratto fosse stabile**, con il
@@ -245,16 +250,20 @@ Regole d'uso:
 3. **Per le decisioni architetturali**: un **ADR `Accepted` prevale sugli altri documenti
    progettuali**.
 4. **Gerarchia normativa generale** (dal grado più alto):
-   1. `00-project-rules.md`
-   2. ADR `Accepted`
-   3. contratto approvato
-   4. Foundation e altri documenti
-   5. documentazione descrittiva
-   6. codice, **limitatamente alla descrizione dell'AS-IS**
+   1. **Ragione di Esistere** (PAYPOC OS — Livello -1) — norma suprema [DECISION: ADR-001]
+   2. `00-project-rules.md` (questa Costituzione tecnica)
+   3. ADR `Accepted`
+   4. contratto approvato
+   5. Foundation e altri documenti
+   6. documentazione descrittiva
+   7. codice, **limitatamente alla descrizione dell'AS-IS**
 5. Questa gerarchia **non significa** che il codice debba essere modificato
    automaticamente: ogni adeguamento richiede uno **STEP di implementazione esplicitamente
    approvato**.
 6. Ogni conflitto va **registrato e risolto esplicitamente**, mai silenziosamente.
+7. **Norma suprema.** Al di sopra di questa Costituzione sta la **Ragione di Esistere**
+   (PAYPOC OS — Livello -1): ogni decisione le è subordinata e va verificata contro di essa
+   (test operativo definito in ADR-001) [DECISION: ADR-001].
 
 ## Articolo 12 — Emendamenti alla Costituzione
 
@@ -274,4 +283,5 @@ Regole d'uso:
 |---|---|---|---|
 | 2026-07-23 | 1.0.0-draft | Prima stesura della Costituzione (STEP 01B). | In approvazione |
 | 2026-07-23 | 1.0.0 | Recepite le modifiche obbligatorie del committente: nome ufficiale del sistema **IWEXA + PayPoc**; percorso ADR ufficiale `docs/adr/` con numerazione a tre cifre; ruoli di approvazione distinti (approvatore finale vs proposta tecnica) e limiti degli agenti automatici; contratto v3.1 come **baseline contrattuale attualmente approvata**; gerarchia delle fonti; regole di terminologia; correzioni formali. Documento **approvato da Cristiano Plattner**. | Approved |
+| 2026-07-25 | 2.0.0 | **Emendamento costituzionale (ADR-001, Accepted):** la **Ragione di Esistere** (PAYPOC OS — Livello -1) diventa **norma suprema**, sovraordinata a questa Costituzione; aggiornati Preambolo, meta e gerarchia normativa (Art. 11.4 con la Ragione al grado più alto; nuovo Art. 11.7). Incremento **MAJOR** per modifica di una regola vincolante (Art. 12.1). | Approved |
 </content>

@@ -7,7 +7,7 @@
 > **Data:** 2026-07-23
 > **Approvatore finale:** Cristiano Plattner
 > **Responsabile della proposta tecnica:** Principal Software Architect
-> **Prerequisito:** `docs/foundation/00-project-rules.md` — Approved 1.0.0
+> **Prerequisito:** `docs/foundation/00-project-rules.md` — Approved 2.0.0
 > **Ambito:** terminologia ufficiale del progetto
 > **Nota:** il documento **non autorizza modifiche al codice**.
 
@@ -77,22 +77,22 @@ deliberatamente scelti in italiano dal committente (es. UI *Maestro* per *Vendor
 - **Ambito:** IWEXA (master) + PayPoc (riferimento).
 - **Proprietario funzionale:** IWEXA.
 - **Fonte:** `[CODE: IwexaVendor, paypoc_iwexa_vendors, /vendors]` · `[CONTRACT: schema Vendor, vendorCode]`.
-- **Stato:** `APPROVED` + `CODE` + `CONTRACT`.
+- **Stato:** `APPROVED` + `CODE` + `CONTRACT`; **naming tecnico/fisico** del soggetto di dominio **Maestro** [DECISION: ADR-004].
 - **Utilizzo tecnico:** **deve** restare "Vendor" in codice, database, API, contratti, eventi, documentazione tecnica, nomi di modelli e proprietà (`vendor*`).
 - **Utilizzo nella UI:** mostrato al cliente come **Maestro** (vedi Maestro).
 - **Sinonimi vietati/non approvati:** Maestro (nel codice), Seller, Merchant, Partner, Supplier.
-- **Note e relazioni:** che un Vendor possa **anche** essere un Fornitore **non** rende "Vendor" e "Fornitore/Supplier" sinonimi automatici (vedi Fornitore).
+- **Note e relazioni:** a livello di **dominio** il soggetto è il **Maestro**; «Vendor» ne è il **naming tecnico/fisico** (vedi Maestro) [DECISION: ADR-004]. Che un Vendor possa **anche** essere un Fornitore **non** rende "Vendor" e "Fornitore/Supplier" sinonimi automatici (vedi Fornitore).
 
 ## Maestro
-- **Definizione:** nome mostrato al cliente al posto di "Vendor" nelle interfacce PayPoc pubbliche.
-- **Ambito:** PayPoc (presentazione).
-- **Proprietario funzionale:** PayPoc (branding).
-- **Fonte:** `[DOC]` (decisione di branding del committente).
-- **Stato:** `APPROVED` + `UI-ONLY`.
-- **Utilizzo tecnico:** **nessuno.** Non modifica classi, tabelle, colonne, API, payload, contratti, eventi, identificatori tecnici, né documentazione tecnica che descrive oggetti di sistema.
+- **Definizione:** **soggetto di dominio di prim'ordine** — il creatore di valore (artigiano, produttore, marca) di cui PayPoc restituisce la **libertà di relazione** con le Famiglie. Storicamente introdotto come nome UI di «Vendor».
+- **Ambito:** dominio (Maestro ↔ Relazione ↔ Famiglie) + presentazione PayPoc.
+- **Proprietario funzionale:** IWEXA (anagrafica tecnica) + PayPoc (relazione/presentazione).
+- **Fonte:** `[DECISION: ADR-004]` · `[DOC]` (decisione di branding del committente).
+- **Stato:** `APPROVED` — **soggetto di dominio** (non più solo `UI-ONLY`) [DECISION: ADR-004].
+- **Utilizzo tecnico:** definisce il **soggetto di dominio** (identità, storia, relazione, libertà). Il **naming fisico** di classi/tabelle/colonne/API resta per ora `vendor*` (Contract First): la rinomina è una **migrazione successiva**, non richiesta da questo passo (ADR-004 §3).
 - **Utilizzo nella UI:** sostituisce visivamente "Vendor" verso il pubblico.
-- **Sinonimi vietati/non approvati:** usare "Maestro" come nome tecnico.
-- **Note e relazioni:** **Maestro è la rappresentazione UI di Vendor**; **non** è un'entità tecnica distinta, salvo futura decisione approvata tramite ADR.
+- **Sinonimi vietati/non approvati:** Seller, Merchant, Partner. *(Il naming fisico resta `vendor*` per Contract First: differimento, non divieto concettuale.)*
+- **Note e relazioni:** **Maestro è il soggetto di dominio centrale**; Maestro e **Famiglie** sono i **due capi** del dominio **Relazione**. «Vendor» resta il **naming tecnico/fisico** dello stesso soggetto (vedi Vendor) [DECISION: ADR-004].
 
 ## Vendor Store
 - **Definizione:** vetrina o spazio commerciale associato a un Vendor nel canale PayPoc.
@@ -126,6 +126,30 @@ deliberatamente scelti in italiano dal committente (es. UI *Maestro* per *Vendor
 - **Utilizzo nella UI:** da definire.
 - **Sinonimi vietati/non approvati:** equiparare automaticamente Fornitore = Vendor.
 - **Note e relazioni:** un soggetto può ricoprire **sia** Fornitore **sia** Vendor; l'equivalenza richiede una decisione architetturale (vedi Domanda 10).
+
+## Relazione
+- **Definizione:** la **relazione diretta Maestro↔Famiglia** modellata come **dominio di prim'ordine** — "lo stesso legame, due capi". È il cuore operativo della Ragione di Esistere.
+- **Ambito:** dominio (PayPoc).
+- **Proprietario funzionale:** PayPoc.
+- **Fonte:** `[DECISION: ADR-005]`. **AS-IS:** dominio **nuovo**, non ancora modellato nel codice (`TODO`/`UNKNOWN`).
+- **Stato:** `APPROVED` come **termine di dominio** [DECISION: ADR-005]; confini operativi da dettagliare.
+- **Note e relazioni:** unisce **Maestro** e **Famiglie**; distinta dall'**Ordine commerciale** (Commerce). Vedi `04` §4.9.
+
+## Famiglie
+- **Definizione:** la **Famiglia/nucleo** come **soggetto relazionale ed economico**, non come generico individuo-consumatore.
+- **Ambito:** dominio (PayPoc).
+- **Proprietario funzionale:** PayPoc.
+- **Fonte:** `[DECISION: ADR-005]`. **AS-IS:** l'entità tecnica esistente è **Customer** (vedi Customer); "Famiglie" è il **soggetto di dominio**.
+- **Stato:** `APPROVED` come **termine di dominio** [DECISION: ADR-005]; confini da dettagliare.
+- **Note e relazioni:** uno dei due capi del dominio **Relazione**; **non** sostituisce il naming tecnico **Customer** (Contract First). Vedi `04` §4.10.
+
+## Fiducia
+- **Definizione:** **fiducia, verifica, trasparenza e reputazione** trattate come **dominio esplicito**, non come dopo-pensiero.
+- **Ambito:** dominio (PayPoc / condiviso).
+- **Proprietario funzionale:** da definire (PayPoc/condiviso).
+- **Fonte:** `[DECISION: ADR-005]`. **AS-IS:** dominio **nuovo**, non modellato (`TODO`/`UNKNOWN`).
+- **Stato:** `APPROVED` come **termine di dominio** [DECISION: ADR-005]; confini da dettagliare.
+- **Note e relazioni:** attraversa Maestro, Relazione, Famiglie, Publication; **distinta dalla Compliance** legale. Vedi `04` §4.11.
 
 ## Wallet
 - **Definizione (proposta):** funzione PayPoc destinata a registrare e rendere disponibile al cliente un valore utilizzabile secondo regole commerciali definite.
@@ -675,4 +699,5 @@ deliberatamente scelti in italiano dal committente (es. UI *Maestro* per *Vendor
 |---|---|---|---|
 | 2026-07-23 | 1.0.0-draft | Prima stesura del Glossario ufficiale (STEP 01C): recepite le 25 regole terminologiche approvate, censiti i termini tecnici/di dominio dallo STEP 01A e dal contratto v3.1, sezione termini vietati e questioni aperte. | In approvazione |
 | 2026-07-23 | 1.0.0-draft | Consolidamento (STEP 02 — Foundation Consolidation): aggiunti **Canonical Product Model**, **Channel Mapping**, **Product Lifecycle**, **Foundation**, **STEP**; formalizzata la **Language Convention**; headword «Canale di vendita» → **Sales Channel**. Nessun termine promosso da PROPOSED ad APPROVED (nessun ADR esistente). | In approvazione |
+| 2026-07-25 | 1.0.0-draft | Riallineamento alla Ragione di Esistere (ADR-004, ADR-005): **Maestro** elevato da `UI-ONLY` a **soggetto di dominio**; **Vendor** riqualificato come naming tecnico/fisico dello stesso soggetto; aggiunti i termini di dominio **Relazione**, **Famiglie**, **Fiducia**. Naming fisico `vendor*`/`Customer` invariato (Contract First). | In approvazione |
 </content>

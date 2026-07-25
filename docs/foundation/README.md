@@ -32,8 +32,11 @@ Ripartizione dei ruoli documentali:
   `DECISION`, `TODO`, `UNKNOWN`) — vedi `00-project-rules.md`, Art. 10.
 - Ogni documento distingue **AS-IS** (ciò che esiste oggi) da **TO-BE** (ciò che deve
   diventare) — Art. 2.
-- La **norma di grado più alto** è `00-project-rules.md` (la Costituzione); in caso di
-  conflitto vale la gerarchia delle fonti dell'Art. 11.
+- La **norma suprema** del progetto è la **Ragione di Esistere** (PAYPOC OS — Livello -1);
+  `00-project-rules.md` è la **Costituzione tecnica**, norma di grado più alto *fra i
+  documenti tecnici*, ad essa subordinata (gerarchia dell'Art. 11) [DECISION: ADR-001].
+- Per l'orientamento sull'intero **PAYPOC OS** (il *perché*, sopra la Foundation) vedi
+  [`../PAYPOC-OS-MAP.md`](../PAYPOC-OS-MAP.md).
 - Ogni documento porta in testa **Stato, Versione, Data, Ambito** e in coda un **changelog**.
 
 ## Ordine consigliato di lettura
@@ -44,22 +47,24 @@ Ripartizione dei ruoli documentali:
 4. **`02-decision-process.md`** — come si prendono e si preservano le decisioni.
 5. **`03-product-model-strategy.md`** — i principi del ciclo di vita del prodotto (Product Lifecycle).
 6. **`04-enterprise-platform-decomposition.md`** — la struttura enterprise (macro-Platform): confini, ownership e dipendenze.
-7. **`docs/adr/`** — gli ADR, man mano che vengono emessi (oggi non ancora presenti).
+7. **`docs/adr/`** — gli ADR (ADR-001, ADR-004, ADR-005 · **Accepted**; ADR-002/003 riservati).
 
 ## Elenco dei documenti e stato di approvazione
 
 | Documento | Contenuto | Stato | Versione |
 |---|---|---|---|
 | [README.md](README.md) | Indice e guida di lettura della Foundation | In approvazione | 1.0.0-draft |
-| [00-project-rules.md](00-project-rules.md) | Costituzione: regole, ruoli, ADR, gerarchia delle fonti | Approved | 1.0.0 |
+| [00-project-rules.md](00-project-rules.md) | Costituzione: regole, ruoli, ADR, gerarchia delle fonti | Approved | 2.0.0 |
 | [01-glossary.md](01-glossary.md) | Fonte unica della terminologia ufficiale | In approvazione | 1.0.0-draft |
-| [02-decision-process.md](02-decision-process.md) | Processo decisionale e preservazione della conoscenza | Approved | 1.0.0 |
+| [02-decision-process.md](02-decision-process.md) | Processo decisionale e preservazione della conoscenza | Approved | 1.0.1 |
 | [03-product-model-strategy.md](03-product-model-strategy.md) | Product Model Strategy (principi del ciclo di vita del prodotto) | Approved | 1.0.1 |
-| [04-enterprise-platform-decomposition.md](04-enterprise-platform-decomposition.md) | Enterprise Platform Decomposition (struttura enterprise: macro-Platform, confini, ownership) | Approved | 1.0.0 |
+| [04-enterprise-platform-decomposition.md](04-enterprise-platform-decomposition.md) | Enterprise Platform Decomposition (struttura enterprise: macro-Platform, confini, ownership) | Approved | 1.1.0 |
 
-> Gli ADR risiederanno in `docs/adr/` (`ADR-NNN-<slug>.md`). Alla data attuale **non
-> esiste ancora alcun ADR**; le decisioni architetturali già formalizzate come strategia
-> (es. `03`) attendono i rispettivi ADR (vedi §Relazione tra Foundation e ADR).
+> Gli ADR risiedono in `docs/adr/` (`ADR-NNN-<slug>.md`). Alla data attuale sono **Accepted**:
+> **ADR-001** (Ragione di Esistere come norma suprema), **ADR-004** (Maestro soggetto di
+> dominio), **ADR-005** (domini Relazione/Famiglie/Fiducia). **ADR-002/003** riservati alla
+> seconda ondata. Le decisioni su `03` (Product Model Strategy) attendono ancora i rispettivi
+> ADR (vedi §Relazione tra Foundation e ADR).
 
 ## Relazione tra Foundation e ADR
 
@@ -69,9 +74,10 @@ Ripartizione dei ruoli documentali:
 - Un documento della Foundation che afferma una scelta architetturale deve **citare l'ADR**
   che la stabilisce (`[DECISION: ADR-NNN]`). Senza ADR, una scelta architetturale è una
   **proposta**, non una decisione formalizzata.
-- Gerarchia normativa (Art. 11): `00-project-rules.md` → ADR `Accepted` → contratto
-  approvato → Foundation e altri documenti → documentazione descrittiva → codice
-  (limitatamente alla descrizione AS-IS).
+- Gerarchia normativa (Art. 11): **Ragione di Esistere** (PAYPOC OS — Livello -1) →
+  `00-project-rules.md` (Costituzione tecnica) → ADR `Accepted` → contratto approvato →
+  Foundation e altri documenti → documentazione descrittiva → codice (limitatamente alla
+  descrizione AS-IS).
 
 ## Relazione tra Foundation e implementazione
 
@@ -102,4 +108,5 @@ Ripartizione dei ruoli documentali:
 |---|---|---|---|
 | 2026-07-23 | 1.0.0-draft | Prima stesura del README della Foundation (STEP 02 — Foundation Consolidation). | In approvazione |
 | 2026-07-24 | 1.0.0-draft | Aggiunto `04-enterprise-platform-decomposition.md` (Approved 1.0.0) all'elenco e all'ordine di lettura (STEP 06 approvazione); chiusa la fase di Foundation Architecture. | In approvazione |
+| 2026-07-25 | 1.0.0-draft | Micro-sync alla nuova gerarchia (ADR-001): **Ragione di Esistere** come norma suprema sopra `00`; puntatore all'OS MAP; ADR-001/004/005 segnalati **Accepted**; versioni aggiornate (`00` 2.0.0, `02` 1.0.1, `04` 1.1.0). | In approvazione |
 </content>

@@ -8,7 +8,7 @@
 > **Autore:** Architecture Foundation
 > **Approvatore finale:** Cristiano Plattner
 > **Responsabile della proposta tecnica:** Principal Software Architect
-> **Prerequisiti:** `docs/foundation/00-project-rules.md` — Approved 1.0.0 ·
+> **Prerequisiti:** `docs/foundation/00-project-rules.md` — Approved 2.0.0 ·
 > `docs/foundation/01-glossary.md` — In approvazione (fonte terminologica di riferimento)
 > **Ambito:** principi architetturali del ciclo di vita del prodotto IWEXA
 > **Nota:** questo documento **non descrive implementazione, database, API o codice**
