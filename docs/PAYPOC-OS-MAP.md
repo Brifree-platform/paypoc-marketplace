@@ -1,7 +1,7 @@
 # PAYPOC OS MAP
 
 > **"Da dove parto?"** — Questa pagina risponde in 30 secondi.
-> **Stato:** Approved · **Versione:** 1.0.1 · **Data:** 2026-07-25 · **Approvato:** 2026-07-25 (Cristiano Plattner)
+> **Stato:** Approved · **Versione:** 1.0.2 · **Data:** 2026-07-25 · **Approvato:** 2026-07-25 (Cristiano Plattner)
 
 L'autorità scende dall'alto: **ogni strato è giustificato da quello sopra di sé.**
 Il *business definisce il software*, non viceversa.
@@ -55,7 +55,7 @@ Il *business definisce il software*, non viceversa.
 
 | Strato | Cosa contiene | Dove nel repo | Stato |
 |---|---|---|---|
-| **Ragione di Esistere** | Il perché · norma suprema | `docs/paypoc-os/` *(in arrivo)* — oggi registrata in `docs/adr/ADR-001` | 🅿️ definita, documento OS da scrivere |
+| **Ragione di Esistere** | Il perché · norma suprema | [`docs/paypoc-os/livello-meno-1-ragione-di-esistere.md`](paypoc-os/livello-meno-1-ragione-di-esistere.md) — decisione in `docs/adr/ADR-001` | ✅ Approved 1.0.0 |
 | **Costituzione Tecnica** | Regole, ruoli, ADR, gerarchia | `docs/foundation/00-project-rules.md` | ✅ Approved 2.0.0 |
 | **ADR** | Le decisioni architetturali | `docs/adr/` | ✅ ADR-001/004/005 Accepted · 002/003 riservati |
 | **Foundation** | Glossario, processo, prodotto, Platform | `docs/foundation/` (00–04 + README) | ✅ 00,02,03,04 Approved · 01,README In approvazione |
@@ -65,7 +65,7 @@ Il *business definisce il software*, non viceversa.
 
 ## Da dove parto? (percorso di lettura)
 1. **Questa mappa.**
-2. **Ragione di Esistere** (il perché) → `ADR-001` (in attesa del documento OS Livello -1).
+2. **Ragione di Esistere** (il perché) → **Livello -1**: [`paypoc-os/livello-meno-1-ragione-di-esistere.md`](paypoc-os/livello-meno-1-ragione-di-esistere.md) (decisione in `ADR-001`).
 3. **Costituzione** `00` → come si decide e si lavora.
 4. **ADR** `docs/adr/` → cosa è già stato deciso.
 5. **Foundation** `docs/foundation/` → l'architettura (leggi `README.md` come indice).

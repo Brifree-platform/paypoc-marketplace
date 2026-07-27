@@ -37,6 +37,8 @@ Ripartizione dei ruoli documentali:
   documenti tecnici*, ad essa subordinata (gerarchia dell'Art. 11) [DECISION: ADR-001].
 - Per l'orientamento sull'intero **PAYPOC OS** (il *perché*, sopra la Foundation) vedi
   [`../PAYPOC-OS-MAP.md`](../PAYPOC-OS-MAP.md).
+- La **Ragione di Esistere** (norma suprema) ha la sua sede nel **Livello -1** del PAYPOC OS:
+  [`../paypoc-os/livello-meno-1-ragione-di-esistere.md`](../paypoc-os/livello-meno-1-ragione-di-esistere.md).
 - Ogni documento porta in testa **Stato, Versione, Data, Ambito** e in coda un **changelog**.
 
 ## Ordine consigliato di lettura
@@ -109,4 +111,5 @@ Ripartizione dei ruoli documentali:
 | 2026-07-23 | 1.0.0-draft | Prima stesura del README della Foundation (STEP 02 — Foundation Consolidation). | In approvazione |
 | 2026-07-24 | 1.0.0-draft | Aggiunto `04-enterprise-platform-decomposition.md` (Approved 1.0.0) all'elenco e all'ordine di lettura (STEP 06 approvazione); chiusa la fase di Foundation Architecture. | In approvazione |
 | 2026-07-25 | 1.0.0-draft | Micro-sync alla nuova gerarchia (ADR-001): **Ragione di Esistere** come norma suprema sopra `00`; puntatore all'OS MAP; ADR-001/004/005 segnalati **Accepted**; versioni aggiornate (`00` 2.0.0, `02` 1.0.1, `04` 1.1.0). | In approvazione |
+| 2026-07-27 | 1.0.0-draft | Aggiunto puntatore al documento di **Livello -1** (`paypoc-os/livello-meno-1-ragione-di-esistere.md`, Approved 1.0.0). Nessuna modifica a contenuti, gerarchie o decisioni. | In approvazione |
 </content>
